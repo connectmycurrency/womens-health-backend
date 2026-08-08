@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" style="background:#FAF8FC;">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light only">
+<title>Review Queue</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{ color-scheme: light only; }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:#FAF8FC; color:#241933; font-family:'Karla', Arial, sans-serif; }
+  .wrap{max-width:760px; margin:0 auto; padding:32px 20px 80px 20px;}
+  h1{font-size:1.5rem; margin-bottom:4px;}
+  .sub{color:#5B4E6D; font-size:0.9rem; margin-bottom:24px;}
+  .key-box{display:flex; gap:8px; margin-bottom:28px;}
+  .key-box input{flex:1; padding:10px 12px; border:1px solid #E4D9F0; border-radius:8px; font-size:0.9rem;}
+  .key-box button{padding:10px 16px; border:none; border-radius:8px; background:#7C2AE8; color:white; font-weight:700; cursor:pointer;}
+  .lead{background:white; border:1px solid #E4D9F0; border-radius:12px; padding:20px; margin-bottom:16px;}
+  .lead-head{display:flex; justify-content:space-between; align-items:flex-start; gap:12px;}
+  .lead-head .email{font-weight:700;}
+  .lead-head .meta{font-size:0.8rem; color:#5B4E6D;}
+  .status{display:inline-block; font-size:0.72rem; font-weight:700; padding:3px 10px; border-radius:100px; text-transform:uppercase;}
+  .status.pending_review{background:#FBE7F1; color:#C2367B;}
+  .status.reviewed{background:#F1E7FB; color:#7C2AE8;}
+  .status.sent{background:#FBF3DE; color:#8A6F1B;}
+  .track{background:#FAF8FC; border-radius:8px; padding:12px 14px; margin-top:12px; font-size:0.88rem;}
+  .track strong{display:block; margin-bottom:2px;}
+  textarea{width:100%; margin-top:12px; padding:10px; border:1px solid #E4D9F0; border-radius:8px; font-family:inherit; font-size:0.88rem; min-height:60px;}
+  .actions{display:flex; gap:10px; margin-top:12px;}
+  .actions button{padding:9px 16px; border-radius:8px; border:none; font-weight:700; cursor:pointer; font-size:0.85rem;}
+  .btn-approve{background:#7C2AE8; color:white;}
+  .btn-send{background:#C9A227; color:#2E0854;}
+  .btn-approve:disabled, .btn-send:disabled{opacity:0.4; cursor:not-allowed;}
+  .empty{color:#5B4E6D; text-align:center; padding:40px 0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Women's Health Check: Review queue</h1>
+  <p class="sub">Reports waiting for a practitioner to check before they go out.</p>
+
+  <div class="key-box">
+    <input type="password" id="apiKey" placeholder="Practitioner API key">
+    <button id="loadBtn">Load queue</button>
+  </div>
+
+  <div id="list"></div>
+</div>
+
+<script>
+  var API_BASE = window.location.origin;
+
+  function apiKey(){ return document.getElementById('apiKey').value; }
+
+  function fetchLeads(){
+    fetch(API_BASE + '/api/leads?status=pending_review', {
+      headers: { 'X-API-Key': apiKey() }
+    })
+    .then(function(r){
+      if(!r.ok) throw new Error('Could not load queue. Check the API key.');
+      return r.json();
+    })
+    .then(renderLeads)
+    .catch(function(err){
+      document.getElementById('list').innerHTML = '<div class="empty">' + err.message + '</div>';
+    });
+  }
+
+  function renderLeads(leads){
+    var list = document.getElementById('list');
+    if(leads.length === 0){
+      list.innerHTML = '<div class="empty">Nothing waiting for review right now.</div>';
+      return;
+    }
+    list.innerHTML = leads.map(leadCard).join('');
+
+    leads.forEach(function(lead){
+      var approveBtn = document.getElementById('approve-' + lead.id);
+      if(approveBtn){
+        approveBtn.addEventListener('click', function(){ approveLead(lead.id); });
+      }
+    });
+  }
+
+  function leadCard(lead){
+    var tracks = Object.keys(lead.report.tracks || {}).map(function(key){
+      var t = lead.report.tracks[key];
+      return '<div class="track"><strong>' + t.title + ' — ' + t.label + '</strong>' + t.text + '</div>';
+    }).join('');
+
+    return '' +
+      '<div class="lead">' +
+        '<div class="lead-head">' +
+          '<div>' +
+            '<div class="email">' + (lead.name || 'No name given') + ' — ' + lead.email + '</div>' +
+            '<div class="meta">' + lead.life_stage + ' · submitted ' + new Date(lead.created_at).toLocaleString() + '</div>' +
+          '</div>' +
+          '<span class="status ' + lead.status + '">' + lead.status.replace('_',' ') + '</span>' +
+        '</div>' +
+        tracks +
+        '<textarea id="notes-' + lead.id + '" placeholder="Practitioner notes (optional)"></textarea>' +
+        '<div class="actions">' +
+          '<button class="btn-approve" id="approve-' + lead.id + '">Approve report</button>' +
+        '</div>' +
+      '</div>';
+  }
+
+  function approveLead(id){
+    var notes = document.getElementById('notes-' + id).value;
+    fetch(API_BASE + '/api/leads/' + id + '/review', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey() },
+      body: JSON.stringify({ practitioner_notes: notes, reviewed_by: 'Practitioner' })
+    })
+    .then(function(r){ if(!r.ok) throw new Error('Could not save review.'); return r.json(); })
+    .then(function(){ fetchLeads(); })
+    .catch(function(err){ alert(err.message); });
+  }
+
+  document.getElementById('loadBtn').addEventListener('click', fetchLeads);
+</script>
+</body>
+</html>
