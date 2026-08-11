@@ -24,7 +24,7 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Women's Health Check API")
 
-FRONTEND_ORIGIN = os.environ.get("FRONTEND_ORIGIN", "*")
+FRONTEND_ORIGIN = os.environ.get("FRONTEND_ORIGIN") or "*"
 
 app.add_middleware(
     CORSMiddleware,
