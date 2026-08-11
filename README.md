@@ -1,43 +1,48 @@
 # Women's Health Check: Backend
 
 FastAPI backend for the Women's Health Check quiz. Handles lead
-storage, server-side scoring, the practitioner review queue, and the
-report send step.
+storage, server-side scoring, the practitioner review queue, account
+signup, PDF report downloads, the report-ready email, and WhatsApp
+community click tracking.
 
-## What this does right now
+## How the full flow works now
 
-- **Receives quiz submissions** (`POST /api/leads`) and stores them,
-  along with a server-computed report. Scoring is recalculated here,
-  not trusted from the front end, so the numbers can't be tampered
-  with in the browser.
-- **Gives practitioners a review queue** at `/admin`, a lightweight
-  page that lists everyone waiting for review, shows their report,
-  and lets a practitioner approve it with optional notes.
-- **Tracks the report lifecycle**: `pending_review` -> `reviewed` ->
-  `sent`.
-- **Tracks booking clicks** (`POST /api/leads/{id}/book-click`) so you
-  can see how many people who got a report went on to click through
-  to book.
+1. Someone completes the quiz. The front end posts their answers to
+   `POST /api/leads`. The backend scores the answers server-side and
+   stores the lead as `pending_review`.
+2. The backend immediately sends a **report-ready email** (via
+   `emailer.py`). This email never contains the detailed report
+   itself, only a teaser-free "your results are ready" message and a
+   link to `/portal/signup.html?lead_id=...`. Nothing sensitive
+   travels by email.
+3. The email explicitly tells people to check spam/junk, since first
+   emails from a new sender routinely land there.
+4. They land on the signup page, enter name, email, phone, and a free
+   bio field, plus a password, and get an account (`POST
+   /api/signup`), linked back to their original lead via `lead_id`.
+5. Logged into `/portal/account.html`, they see their report status
+   (`pending_review` or `reviewed`), a summary of each track, a button
+   to download the full report as a PDF, and a button to join your
+   WhatsApp community.
+6. A practitioner still reviews the report independently via `/admin`,
+   whenever they get to it. The account page shows the current status
+   plainly either way, so nothing is hidden, just not gated behind
+   waiting for review before the person can see anything at all.
 
 ## What's stubbed, on purpose, for this first pass
 
-- **Email sending**: `send_report_email()` in `main.py` currently just
-  logs instead of sending. Once you have a Resend API key (the same
-  provider CMC Connect already uses) and a report email template,
-  fill in the commented-out block.
-- **Booking**: the click is tracked, but there's no real calendar
-  integration yet. Simplest next step is a Calendly link per clinic,
-  passed to the front end as a config value, rather than a full API
-  integration.
-- **Practitioner auth**: one shared API key (`PRACTITIONER_API_KEY`),
-  not individual logins. Fine for a single-practitioner pilot. Once
-  you have more than one practitioner or clinic, swap this for proper
-  per-user auth, Clerk is the natural fit since CMC Connect already
-  uses it.
-- **Front-end connection**: the quiz HTML file built earlier still
-  computes and shows the report entirely client-side and doesn't call
-  this API yet. Wiring the quiz's "finish" step to `POST /api/leads`
-  is the next piece of work, see below.
+- **Email sending**: works in "stub mode" (logs instead of sending)
+  until you set `RESEND_API_KEY`. Once set, `emailer.py` sends for
+  real via Resend, same provider CMC Connect already uses.
+- **WhatsApp**: this is a static community invite link
+  (`WHATSAPP_COMMUNITY_URL`), not a bot integration. A real
+  account-linked WhatsApp bot needs Meta's WhatsApp Business API,
+  which requires business verification and approval, a separate,
+  heavier project if you want it later. For now, clicking "Join our
+  WhatsApp community" opens your invite link and is tracked
+  server-side so you know who clicked.
+- **Practitioner auth**: still one shared API key, not individual
+  logins. Fine for a single-practitioner pilot.
 
 ## Running it locally
 
@@ -46,33 +51,27 @@ pip install -r requirements.txt
 uvicorn main:app --reload
 ```
 
-This will create a local `womens_health.db` SQLite file automatically,
-no database setup needed to test it. Visit `http://localhost:8000/admin`
-for the review queue, and `http://localhost:8000/docs` for interactive
-API docs.
+Then visit:
+- `http://localhost:8000/docs` to test the API directly
+- `http://localhost:8000/admin` for the practitioner review queue
+- `http://localhost:8000/portal/signup.html?lead_id=<id>` to test
+  signup (grab a real `lead_id` from a test submission via `/docs`
+  first)
+- `http://localhost:8000/portal/account.html` after signing up or
+  logging in
 
 ## Deploying to Render
 
-1. Push this folder to a GitHub repo (or a subfolder of `vantara`, if
-   you'd rather keep it in the same repo as CMC Connect).
-2. In Render, create a new Web Service from that repo. It will pick up
-   `render.yaml` automatically.
-3. Set the environment variables listed in `.env.example`, in
-   particular `DATABASE_URL` (point this at a Supabase Postgres
-   instance, same pattern as CMC Connect) and `PRACTITIONER_API_KEY`.
-4. Once deployed, the review queue is at `https://<your-render-url>/admin`.
+Same as before, push to GitHub, connect the repo in Render, set the
+environment variables. New ones to set for this pass:
+
+- `JWT_SECRET` change this from the placeholder, it signs login tokens
+- `RESEND_API_KEY` and `EMAIL_FROM` once you're ready for real emails to send
+- `PORTAL_BASE_URL` defaults to this backend's own `/portal` path, which works with no separate hosting needed
+- `WHATSAPP_COMMUNITY_URL` your actual WhatsApp community invite link
 
 ## Connecting the quiz front end
 
-The quiz HTML file currently ends the flow by showing the report
-directly in the browser. To connect it to this backend, add a `fetch`
-call in its `showReport()` function that posts to
-`POST /api/leads` with the person's name, email, consent choices,
-`life_stage`, and `answers`. The response includes the server-computed
-report, which can replace the client-side one shown on screen.
-
-That also means adding an email capture step to the quiz itself, since
-right now it never asks for one. Worth deciding whether that sits
-before the report (gate the results behind an email) or after (show
-the report first, then offer to email a copy), that's a product
-decision rather than a technical one.
+Already done, `womens-health-quiz.html` now posts to `POST
+/api/leads` on submission and shows a "check your inbox, including
+spam" confirmation instead of the full report.

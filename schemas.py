@@ -16,9 +16,6 @@ class LeadCreate(BaseModel):
 class LeadReviewUpdate(BaseModel):
     practitioner_notes: Optional[str] = None
     reviewed_by: str
-    # If the practitioner wants to change the report text before it goes
-    # out, they can pass an edited version here. If omitted, the
-    # server-generated report is approved as-is.
     edited_report: Optional[Dict[str, Any]] = None
 
 
@@ -39,3 +36,30 @@ class LeadOut(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class SignupRequest(BaseModel):
+    lead_id: Optional[str] = None
+    name: str
+    email: EmailStr
+    phone: Optional[str] = None
+    bio: Optional[str] = None
+    password: str
+
+
+class LoginRequest(BaseModel):
+    email: EmailStr
+    password: str
+
+
+class TokenOut(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+
+
+class MeReportOut(BaseModel):
+    life_stage: Optional[str] = None
+    report: Optional[Dict[str, Any]] = None
+    status: Optional[str] = None
+    reviewed_by: Optional[str] = None
+    has_report: bool

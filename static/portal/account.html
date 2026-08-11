@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" style="background:#FAF8FC;">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light only">
+<title>Your account</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Karla:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{ color-scheme: light only; }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:#FAF8FC; color:#241933; font-family:'Karla', Arial, sans-serif; }
+  .wrap{max-width:640px; margin:0 auto; padding:48px 24px;}
+  h1{font-family:'Fraunces', serif; font-size:1.7rem; color:#2E0854; margin-bottom:4px;}
+  .sub{color:#5B4E6D; margin-bottom:28px;}
+  .card{background:white; border:1px solid #E4D9F0; border-radius:14px; padding:24px; margin-bottom:18px;}
+  .status{display:inline-block; font-size:0.72rem; font-weight:700; padding:4px 12px; border-radius:100px; text-transform:uppercase; margin-bottom:14px;}
+  .status.pending_review{background:#FBE7F1; color:#C2367B;}
+  .status.reviewed{background:#F1E7FB; color:#7C2AE8;}
+  .track{background:#FAF8FC; border-radius:10px; padding:16px 18px; margin-top:12px;}
+  .track h3{font-size:1.05rem; margin:0 0 4px 0; color:#2E0854;}
+  .track .band{font-weight:700; font-size:0.88rem; color:#7C2AE8;}
+  .track p{font-size:0.92rem; color:#5B4E6D; margin-top:6px;}
+  .track ul{margin:8px 0 0 0; padding-left:18px; font-size:0.9rem; color:#5B4E6D;}
+  button, .btn-link{
+    display:inline-block; padding:13px 22px; border-radius:100px; border:none; font-weight:700;
+    cursor:pointer; font-size:0.95rem; text-decoration:none; text-align:center;
+  }
+  .btn-gold{background:#C9A227; color:#2E0854;}
+  .btn-whatsapp{background:#25D366; color:white; margin-left:10px;}
+  .empty{color:#5B4E6D; text-align:center; padding:40px 0;}
+  .logout{font-size:0.85rem; color:#5B4E6D; text-decoration:underline; cursor:pointer; background:none; border:none; padding:0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div style="display:flex; justify-content:space-between; align-items:center;">
+    <div>
+      <h1>Your account</h1>
+      <p class="sub">Your Women's Health Check results, in one place.</p>
+    </div>
+    <button class="logout" id="logoutBtn">Log out</button>
+  </div>
+
+  <div id="content"></div>
+</div>
+
+<script>
+  var API_BASE = window.location.origin;
+  var token = localStorage.getItem('whc_token');
+
+  if(!token){
+    window.location.href = 'login.html';
+  }
+
+  document.getElementById('logoutBtn').addEventListener('click', function(){
+    localStorage.removeItem('whc_token');
+    window.location.href = 'login.html';
+  });
+
+  fetch(API_BASE + '/api/me/report', {
+    headers: { 'Authorization': 'Bearer ' + token }
+  })
+  .then(function(r){
+    if(r.status === 401){ localStorage.removeItem('whc_token'); window.location.href = 'login.html'; throw new Error('logged out'); }
+    return r.json();
+  })
+  .then(function(data){
+    var content = document.getElementById('content');
+    if(!data.has_report){
+      content.innerHTML = '<div class="card"><div class="empty">No report is linked to this account yet.</div></div>';
+      return;
+    }
+
+    var tracksHtml = Object.keys(data.report.tracks).map(function(key){
+      var t = data.report.tracks[key];
+      var nextItems = (t.next || []).map(function(n){ return '<li>' + n + '</li>'; }).join('');
+      return '<div class="track"><h3>' + t.title + '</h3><div class="band">' + t.label + '</div><p>' + t.text + '</p><ul>' + nextItems + '</ul></div>';
+    }).join('');
+
+    content.innerHTML = '' +
+      '<div class="card">' +
+        '<span class="status ' + data.status + '">' + data.status.replace('_',' ') + '</span>' +
+        tracksHtml +
+      '</div>' +
+      '<div class="card" style="text-align:center;">' +
+        '<a class="btn-link btn-gold" id="downloadBtn" href="#">Download full report (PDF)</a>' +
+        '<a class="btn-link btn-whatsapp" id="whatsappBtn" href="#" target="_blank" rel="noopener">Join our WhatsApp community</a>' +
+      '</div>';
+
+    document.getElementById('downloadBtn').addEventListener('click', function(e){
+      e.preventDefault();
+      fetch(API_BASE + '/api/me/report/pdf', { headers: { 'Authorization': 'Bearer ' + token } })
+        .then(function(r){ if(!r.ok) throw new Error('Could not download report.'); return r.blob(); })
+        .then(function(blob){
+          var url = window.URL.createObjectURL(blob);
+          var a = document.createElement('a');
+          a.href = url;
+          a.download = 'womens-health-check-report.pdf';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          window.URL.revokeObjectURL(url);
+        })
+        .catch(function(err){ alert(err.message); });
+    });
+
+    fetch(API_BASE + '/api/whatsapp-link')
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        document.getElementById('whatsappBtn').href = d.url;
+        document.getElementById('whatsappBtn').addEventListener('click', function(){
+          fetch(API_BASE + '/api/me/whatsapp-click', {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + token }
+          }).catch(function(){});
+        });
+      });
+  })
+  .catch(function(err){
+    if(err.message !== 'logged out'){
+      document.getElementById('content').innerHTML = '<div class="card"><div class="empty">Something went wrong loading your report.</div></div>';
+    }
+  });
+</script>
+</body>
+</html>

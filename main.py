@@ -5,20 +5,25 @@ from typing import Optional, List
 from fastapi import FastAPI, Depends, HTTPException, Header
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import Response
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 
 from database import Base, engine, get_db
-from models import Lead
-from schemas import LeadCreate, LeadOut, LeadReviewUpdate
+from models import Lead, User
+from schemas import (
+    LeadCreate, LeadOut, LeadReviewUpdate,
+    SignupRequest, LoginRequest, TokenOut, MeReportOut,
+)
 from scoring import build_report
+from auth_utils import hash_password, verify_password, create_access_token, decode_access_token
+from emailer import send_report_ready_email
+from report_pdf import build_report_pdf
 
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Women's Health Check API")
 
-# Allow the quiz front end (wherever it's hosted) to call this API.
-# Set FRONTEND_ORIGIN as an environment variable on Render once the
-# front end has a real domain, e.g. https://yourclinic-quiz.netlify.app
 FRONTEND_ORIGIN = os.environ.get("FRONTEND_ORIGIN", "*")
 
 app.add_middleware(
@@ -29,21 +34,29 @@ app.add_middleware(
 )
 
 app.mount("/admin", StaticFiles(directory="static", html=True), name="admin")
+app.mount("/portal", StaticFiles(directory="static/portal", html=True), name="portal")
 
 PRACTITIONER_API_KEY = os.environ.get("PRACTITIONER_API_KEY", "change-me-before-deploying")
 
+WHATSAPP_COMMUNITY_URL = os.environ.get("WHATSAPP_COMMUNITY_URL", "https://chat.whatsapp.com/replace-with-your-invite-link")
+
 
 def require_practitioner(x_api_key: Optional[str] = Header(default=None)):
-    """
-    Simple shared-secret auth for practitioner-only endpoints.
-
-    This is intentionally minimal for the pilot stage. Before onboarding
-    a real clinic, swap this for proper per-practitioner login (Clerk,
-    matching how CMC Connect handles auth, is the natural fit once this
-    needs multiple named users rather than one shared key).
-    """
     if not x_api_key or x_api_key != PRACTITIONER_API_KEY:
         raise HTTPException(status_code=401, detail="Missing or invalid API key")
+
+
+def get_current_user(authorization: Optional[str] = Header(default=None), db: Session = Depends(get_db)) -> User:
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Missing bearer token")
+    token = authorization.split(" ", 1)[1]
+    user_id = decode_access_token(token)
+    if not user_id:
+        raise HTTPException(status_code=401, detail="Invalid or expired token")
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=401, detail="User not found")
+    return user
 
 
 @app.get("/")
@@ -51,13 +64,10 @@ def health_check():
     return {"status": "ok", "service": "womens-health-check-api"}
 
 
+# ---------- Lead submission (called by the quiz) ----------
+
 @app.post("/api/leads", response_model=LeadOut)
 def create_lead(payload: LeadCreate, db: Session = Depends(get_db)):
-    """
-    Called by the quiz front end when someone finishes the quiz.
-    Computes the report server-side (never trust a client-computed
-    score) and stores it as pending_review.
-    """
     report = build_report(payload.life_stage, payload.answers)
 
     lead = Lead(
@@ -73,16 +83,21 @@ def create_lead(payload: LeadCreate, db: Session = Depends(get_db)):
     db.add(lead)
     db.commit()
     db.refresh(lead)
+
+    # Email is teaser + a link to the signup/portal page, never the full
+    # report content itself, so nothing detailed leaves via email.
+    send_report_ready_email(lead)
+    lead.sent_at = datetime.utcnow()
+    db.commit()
+    db.refresh(lead)
+
     return lead
 
 
+# ---------- Practitioner review queue ----------
+
 @app.get("/api/leads", response_model=List[LeadOut])
-def list_leads(
-    status: Optional[str] = None,
-    db: Session = Depends(get_db),
-    _: None = Depends(require_practitioner),
-):
-    """Practitioner review queue. Filter with ?status=pending_review to see what needs checking."""
+def list_leads(status: Optional[str] = None, db: Session = Depends(get_db), _: None = Depends(require_practitioner)):
     query = db.query(Lead).order_by(Lead.created_at.desc())
     if status:
         query = query.filter(Lead.status == status)
@@ -98,13 +113,7 @@ def get_lead(lead_id: str, db: Session = Depends(get_db), _: None = Depends(requ
 
 
 @app.patch("/api/leads/{lead_id}/review", response_model=LeadOut)
-def review_lead(
-    lead_id: str,
-    payload: LeadReviewUpdate,
-    db: Session = Depends(get_db),
-    _: None = Depends(require_practitioner),
-):
-    """Practitioner approves the report, optionally editing it first."""
+def review_lead(lead_id: str, payload: LeadReviewUpdate, db: Session = Depends(get_db), _: None = Depends(require_practitioner)):
     lead = db.query(Lead).filter(Lead.id == lead_id).first()
     if not lead:
         raise HTTPException(status_code=404, detail="Lead not found")
@@ -121,31 +130,8 @@ def review_lead(
     return lead
 
 
-@app.post("/api/leads/{lead_id}/send", response_model=LeadOut)
-def send_lead_report(lead_id: str, db: Session = Depends(get_db), _: None = Depends(require_practitioner)):
-    """
-    Marks the report as sent. Wire this up to Resend (the same email
-    provider CMC Connect already uses) once you have a template ready,
-    see send_report_email() below for where that call goes.
-    """
-    lead = db.query(Lead).filter(Lead.id == lead_id).first()
-    if not lead:
-        raise HTTPException(status_code=404, detail="Lead not found")
-    if lead.status != "reviewed":
-        raise HTTPException(status_code=400, detail="Report must be reviewed before it can be sent")
-
-    send_report_email(lead)
-
-    lead.status = "sent"
-    lead.sent_at = datetime.utcnow()
-    db.commit()
-    db.refresh(lead)
-    return lead
-
-
 @app.post("/api/leads/{lead_id}/book-click")
 def track_booking_click(lead_id: str, db: Session = Depends(get_db)):
-    """Public endpoint the front end calls when someone clicks 'Book a consultation'."""
     lead = db.query(Lead).filter(Lead.id == lead_id).first()
     if not lead:
         raise HTTPException(status_code=404, detail="Lead not found")
@@ -154,28 +140,90 @@ def track_booking_click(lead_id: str, db: Session = Depends(get_db)):
     return {"ok": True}
 
 
-def send_report_email(lead: Lead):
-    """
-    Stub for sending the final report by email via Resend.
+# ---------- Account signup / login (from the report-ready email) ----------
 
-    RESEND_API_KEY is not set yet, so this currently just prints to the
-    log instead of sending. Once you have a Resend key and an email
-    template, replace the body of this function with an actual API
-    call, the same pattern CMC Connect already uses for its emails.
-    """
-    resend_key = os.environ.get("RESEND_API_KEY")
-    if not resend_key:
-        print(f"[email stub] Would send report to {lead.email} now (no RESEND_API_KEY set)")
-        return
+@app.post("/api/signup", response_model=TokenOut)
+def signup(payload: SignupRequest, db: Session = Depends(get_db)):
+    existing = db.query(User).filter(User.email == payload.email).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="An account with this email already exists. Try logging in instead.")
 
-    # Example of what the real call will look like once a key exists:
-    #
-    # import resend
-    # resend.api_key = resend_key
-    # resend.Emails.send({
-    #     "from": "reports@yourclinic.com",
-    #     "to": lead.email,
-    #     "subject": "Your Women's Health Check",
-    #     "html": render_report_email_html(lead),
-    # })
-    print(f"[email stub] Sending report to {lead.email}")
+    user = User(
+        lead_id=payload.lead_id,
+        name=payload.name,
+        email=payload.email,
+        phone=payload.phone,
+        bio=payload.bio,
+        password_hash=hash_password(payload.password),
+    )
+    db.add(user)
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(status_code=400, detail="An account with this email already exists. Try logging in instead.")
+    db.refresh(user)
+
+    token = create_access_token(user.id)
+    return TokenOut(access_token=token)
+
+
+@app.post("/api/login", response_model=TokenOut)
+def login(payload: LoginRequest, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == payload.email).first()
+    if not user or not verify_password(payload.password, user.password_hash):
+        raise HTTPException(status_code=401, detail="Incorrect email or password")
+    token = create_access_token(user.id)
+    return TokenOut(access_token=token)
+
+
+# ---------- The logged-in person's own report ----------
+
+@app.get("/api/me/report", response_model=MeReportOut)
+def get_my_report(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    if not user.lead_id:
+        return MeReportOut(has_report=False)
+    lead = db.query(Lead).filter(Lead.id == user.lead_id).first()
+    if not lead:
+        return MeReportOut(has_report=False)
+    return MeReportOut(
+        life_stage=lead.life_stage,
+        report=lead.report,
+        status=lead.status,
+        reviewed_by=lead.reviewed_by,
+        has_report=True,
+    )
+
+
+@app.get("/api/me/report/pdf")
+def download_my_report_pdf(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    if not user.lead_id:
+        raise HTTPException(status_code=404, detail="No report linked to this account")
+    lead = db.query(Lead).filter(Lead.id == user.lead_id).first()
+    if not lead:
+        raise HTTPException(status_code=404, detail="No report linked to this account")
+
+    pdf_bytes = build_report_pdf(
+        user_name=user.name,
+        life_stage=lead.life_stage,
+        report=lead.report,
+        reviewed=(lead.status == "reviewed"),
+        reviewed_by=lead.reviewed_by,
+    )
+    return Response(
+        content=pdf_bytes,
+        media_type="application/pdf",
+        headers={"Content-Disposition": "attachment; filename=womens-health-check-report.pdf"},
+    )
+
+
+@app.get("/api/whatsapp-link")
+def get_whatsapp_link():
+    return {"url": WHATSAPP_COMMUNITY_URL}
+
+
+@app.post("/api/me/whatsapp-click")
+def track_whatsapp_click(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    user.whatsapp_clicked = True
+    db.commit()
+    return {"ok": True}

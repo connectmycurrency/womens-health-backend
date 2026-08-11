@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" style="background:#FAF8FC;">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light only">
+<title>Create your account</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Karla:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{ color-scheme: light only; }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:#FAF8FC; color:#241933; font-family:'Karla', Arial, sans-serif; }
+  .wrap{max-width:440px; margin:0 auto; padding:56px 24px;}
+  h1{font-family:'Fraunces', serif; font-size:1.6rem; color:#2E0854; margin-bottom:6px;}
+  .sub{color:#5B4E6D; font-size:0.95rem; margin-bottom:28px;}
+  label{display:block; font-size:0.85rem; font-weight:700; margin-bottom:6px; margin-top:16px;}
+  input, textarea{
+    width:100%; padding:12px 14px; border:1.5px solid #E4D9F0; border-radius:10px;
+    font-family:inherit; font-size:0.98rem;
+  }
+  input:focus, textarea:focus{outline:none; border-color:#7C2AE8;}
+  textarea{min-height:80px; resize:vertical;}
+  .hint{font-size:0.78rem; color:#5B4E6D; margin-top:4px;}
+  button{
+    width:100%; margin-top:26px; padding:14px; border:none; border-radius:100px;
+    background:#7C2AE8; color:white; font-weight:700; font-size:1rem; cursor:pointer;
+  }
+  button:disabled{opacity:0.5;}
+  .error{color:#C2367B; font-size:0.88rem; margin-top:14px; text-align:center;}
+  .login-link{text-align:center; margin-top:18px; font-size:0.88rem; color:#5B4E6D;}
+  .login-link a{color:#7C2AE8; font-weight:700; text-decoration:none;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Create your account</h1>
+  <p class="sub">This gets you access to your full report, downloadable any time, plus our community.</p>
+
+  <form id="signupForm">
+    <label for="name">Name</label>
+    <input type="text" id="name" required>
+
+    <label for="email">Email</label>
+    <input type="email" id="email" required>
+
+    <label for="phone">Phone</label>
+    <input type="tel" id="phone">
+
+    <label for="bio">Tell us a little about yourself</label>
+    <textarea id="bio" placeholder="Optional, whatever you'd like us to know"></textarea>
+
+    <label for="password">Create a password</label>
+    <input type="password" id="password" required minlength="8">
+    <div class="hint">At least 8 characters.</div>
+
+    <button type="submit" id="submitBtn">Create account</button>
+    <p class="error" id="errorMsg" hidden></p>
+  </form>
+
+  <p class="login-link">Already have an account? <a href="login.html">Log in</a></p>
+</div>
+
+<script>
+  var API_BASE = window.location.origin;
+
+  function getParam(name){
+    var params = new URLSearchParams(window.location.search);
+    return params.get(name);
+  }
+
+  document.getElementById('signupForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var errorEl = document.getElementById('errorMsg');
+    var btn = document.getElementById('submitBtn');
+    errorEl.hidden = true;
+    btn.disabled = true;
+    btn.textContent = 'Creating account...';
+
+    var payload = {
+      lead_id: getParam('lead_id'),
+      name: document.getElementById('name').value,
+      email: document.getElementById('email').value,
+      phone: document.getElementById('phone').value || null,
+      bio: document.getElementById('bio').value || null,
+      password: document.getElementById('password').value
+    };
+
+    fetch(API_BASE + '/api/signup', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    })
+    .then(function(r){
+      if(!r.ok){ return r.json().then(function(d){ throw new Error(d.detail || 'Something went wrong.'); }); }
+      return r.json();
+    })
+    .then(function(data){
+      localStorage.setItem('whc_token', data.access_token);
+      window.location.href = 'account.html';
+    })
+    .catch(function(err){
+      errorEl.textContent = err.message;
+      errorEl.hidden = false;
+      btn.disabled = false;
+      btn.textContent = 'Create account';
+    });
+  });
+</script>
+</body>
+</html>
