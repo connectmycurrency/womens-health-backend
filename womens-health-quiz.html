@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en" style="background:#FAF8FC;">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light only">
+<meta name="theme-color" content="#2E0854">
+<title>The Full Picture: A Women's Health Check</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Karla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme: light only;
+    --purple-dark:#2E0854;
+    --purple:#7C2AE8;
+    --purple-pale:#F1E7FB;
+    --magenta:#C2367B;
+    --magenta-pale:#FBE7F1;
+    --gold:#C9A227;
+    --gold-pale:#FBF3DE;
+    --bg:#FAF8FC;
+    --white:#FFFFFF;
+    --ink:#241933;
+    --ink-soft:#5B4E6D;
+    --border:#E4D9F0;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:auto; background:#FAF8FC !important;}
+  body{
+    margin:0; background:#FAF8FC !important; color:var(--ink);
+    font-family:'Karla', Arial, sans-serif; line-height:1.55;
+  }
+  h1,h2,h3{ margin:0 0 0.4em 0; color:var(--purple-dark); font-family:'Fraunces', serif; font-weight:600; letter-spacing:-0.01em; }
+  p{margin:0;}
+  button{font-family:inherit;}
+  .wrap{max-width:920px; margin:0 auto; padding:0 24px;}
+  section{padding:56px 0; background:var(--bg);}
+  @media (max-width:640px){ section{padding:40px 0;} }
+  .center{text-align:center;}
+
+  header{background:var(--purple-dark); padding:16px 0;}
+  .brand{display:flex; align-items:center; justify-content:center; gap:10px;}
+  .brand-badge{
+    background:var(--white); color:var(--purple-dark); font-weight:800; font-size:0.95rem;
+    padding:5px 12px; border-radius:100px; letter-spacing:0.02em;
+  }
+  .brand-name{color:var(--white); font-weight:600; font-size:0.95rem;}
+
+  /* hero */
+  #landing{padding:0; background:var(--purple-dark);}
+  .hero-band{background:var(--purple-dark); color:var(--white);}
+  .hero{padding:64px 0 56px 0; text-align:center; max-width:640px; margin:0 auto;}
+  .eyebrow-light{
+    text-transform:uppercase; font-size:0.78rem; font-weight:700; letter-spacing:0.08em; color:#D9B8F5;
+  }
+  .hero h1{color:var(--white); font-size:clamp(2rem, 5vw, 2.9rem); margin-top:0.5em;}
+  .hero p.lede{font-size:1.1rem; color:#E6D4F5; max-width:44ch; margin:0.9em auto 0 auto;}
+  .badges{display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-top:1.5em;}
+  .badge{
+    display:inline-flex; align-items:center; gap:6px;
+    background:rgba(255,255,255,0.14); color:var(--white); font-size:0.82rem; font-weight:600;
+    padding:6px 13px; border-radius:100px;
+  }
+  .cta{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--gold); color:var(--purple-dark); border:none;
+    padding:16px 28px; border-radius:100px; font-weight:700; font-size:1.02rem;
+    cursor:pointer; margin-top:1.8em;
+    transition:background 0.15s ease, transform 0.1s ease;
+  }
+  .cta:hover{background:#DBB53A;}
+  .cta:active{transform:translateY(1px);}
+  .cta:focus-visible{outline:3px solid var(--white); outline-offset:2px;}
+  .cta-sub{display:block; font-size:0.82rem; color:#D9B8F5; margin-top:0.9em;}
+
+  /* who it's for: avatar mosaic */
+  #for-you{background:var(--bg);}
+  .section-title{font-size:1.7rem; margin-top:0.3em;}
+  .eyebrow{
+    text-transform:uppercase; font-size:0.78rem; font-weight:700; letter-spacing:0.06em; color:var(--purple);
+  }
+  .avatars{display:flex; justify-content:center; align-items:flex-end; gap:22px; margin:44px 0 40px 0; flex-wrap:wrap;}
+  .avatar{
+    width:112px; height:112px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    flex:none;
+  }
+  .avatar.a1{background:var(--magenta-pale);}
+  .avatar.a2{background:var(--purple-pale); width:132px; height:132px;}
+  .avatar.a3{background:var(--gold-pale);}
+  .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:8px;}
+  @media (max-width:760px){ .cards{grid-template-columns:1fr;} }
+  .card{
+    background:var(--white); border:1px solid var(--border); border-radius:var(--radius);
+    padding:26px; text-align:center;
+  }
+  .card h3{font-size:1.12rem; margin-bottom:0.3em;}
+  .card p{color:var(--ink-soft); font-size:0.95rem;}
+
+  /* what we'll ask about: icon grid on colour band */
+  #ask{background:var(--purple-dark); color:var(--white);}
+  #ask .section-title{color:var(--white);}
+  .icon-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:32px; margin-top:40px; text-align:center;}
+  @media (max-width:640px){ .icon-grid{grid-template-columns:repeat(2,1fr);} }
+  .icon-grid .item{display:flex; flex-direction:column; align-items:center; gap:10px;}
+  .icon-badge{
+    width:64px; height:64px; border-radius:50%; background:rgba(255,255,255,0.12);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .icon-grid .item span{font-weight:700; font-size:0.92rem;}
+  #ask .note{max-width:56ch; margin:40px auto 0 auto; color:#E0C9F5; font-size:0.95rem; text-align:center;}
+
+  /* how it works */
+  #how{background:var(--bg);}
+  .steps{display:grid; grid-template-columns:repeat(3,1fr); gap:26px; margin-top:40px;}
+  @media (max-width:760px){ .steps{grid-template-columns:1fr;} }
+  .step{text-align:center;}
+  .step-icon{
+    width:52px; height:52px; border-radius:50%; background:var(--purple-pale); color:var(--purple);
+    display:flex; align-items:center; justify-content:center; margin:0 auto 14px auto; font-weight:800; font-family:'Fraunces',serif;
+  }
+  .step h3{font-size:1.05rem; margin-bottom:0.25em;}
+  .step p{color:var(--ink-soft); font-size:0.92rem;}
+
+  /* what you get */
+  #get{background:var(--white); border-top:1px solid var(--border); border-bottom:1px solid var(--border);}
+  ul.getlist{list-style:none; margin:32px auto 0 auto; padding:0; display:grid; gap:14px; max-width:520px;}
+  ul.getlist li{display:flex; gap:12px; align-items:flex-start; color:var(--ink-soft); text-align:left;}
+  .tick{
+    width:22px; height:22px; border-radius:50%; background:var(--purple); flex:none;
+    display:flex; align-items:center; justify-content:center; margin-top:2px;
+  }
+  .reassure{
+    margin:36px auto 0 auto; max-width:560px; background:var(--magenta-pale); border-left:4px solid var(--magenta);
+    border-radius:0 12px 12px 0; padding:18px 22px; text-align:left;
+  }
+  .reassure p{color:var(--ink); font-size:0.95rem;}
+
+  footer{background:var(--bg); border-top:1px solid var(--border); padding:32px 0;}
+  footer p{font-size:0.82rem; color:var(--ink-soft); max-width:70ch; margin:0 auto; text-align:center;}
+
+  /* ---------- QUIZ ---------- */
+  #quiz{background:var(--white) !important; min-height:100vh; padding-top:40px;}
+  #quiz .wrap{max-width:600px;}
+  .progress-label{font-size:0.85rem; font-weight:600; color:var(--ink-soft); margin-bottom:8px;}
+  .progress-track{ height:8px; background:var(--purple-pale); border-radius:100px; overflow:hidden; margin-bottom:36px; }
+  .progress-fill{height:100%; background:var(--purple); width:0%; transition:width 0.3s ease; border-radius:100px;}
+  .q-eyebrow{font-size:0.78rem; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; color:var(--magenta);}
+  .q-text{font-family:'Fraunces', serif; font-size:1.5rem; font-weight:600; color:var(--purple-dark); margin:0.5em 0 1.2em 0; line-height:1.3;}
+  .options{display:grid; gap:10px;}
+  .opt{
+    text-align:left; padding:15px 18px; border:2px solid var(--border); border-radius:12px;
+    background:var(--white); cursor:pointer; font-size:1rem; color:var(--ink); font-weight:500;
+    transition:border-color 0.12s ease, background 0.12s ease;
+  }
+  .opt:hover{border-color:var(--purple);}
+  .opt.selected{border-color:var(--purple); background:var(--purple-pale); color:var(--purple-dark); font-weight:700;}
+  .opt:focus-visible{outline:3px solid var(--gold); outline-offset:1px;}
+  .quiz-nav{display:flex; justify-content:space-between; align-items:center; margin-top:30px; padding-bottom:40px;}
+  .btn-ghost{
+    background:none; border:none; color:var(--purple); font-size:0.95rem; font-weight:600;
+    cursor:pointer; text-decoration:underline; padding:8px 0;
+  }
+  .btn-primary{
+    background:var(--purple); color:var(--white); border:none; padding:14px 26px;
+    border-radius:100px; font-weight:700; cursor:pointer; font-size:0.98rem;
+    opacity:0.35; pointer-events:none; transition:opacity 0.15s ease;
+  }
+  .btn-primary.ready{opacity:1; pointer-events:auto;}
+
+  /* ---------- REPORT ---------- */
+  #report{background:var(--bg) !important;}
+  #report .wrap{max-width:760px;}
+  .report-head{background:var(--white); border:1px solid var(--border); border-radius:var(--radius); padding:28px; margin-bottom:24px; text-align:center;}
+  .report-head h1{font-size:1.9rem;}
+  .report-head p{color:var(--ink-soft); margin-top:0.5em;}
+  .track{
+    background:var(--white); border:1px solid var(--border); border-left:5px solid var(--purple);
+    border-radius:12px; padding:26px; margin-bottom:20px;
+  }
+  .track.magenta{border-left-color:var(--magenta);}
+  .track.gold{border-left-color:var(--gold);}
+  .track h3{font-size:1.2rem; margin:0 0 12px 0;}
+  .band{
+    display:inline-block; font-size:0.76rem; font-weight:700; letter-spacing:0.02em;
+    padding:5px 12px; border-radius:100px; margin-bottom:14px;
+  }
+  .band.low{background:var(--gold-pale); color:#8A6F1B;}
+  .band.mid{background:var(--magenta-pale); color:var(--magenta);}
+  .band.high{background:var(--purple-pale); color:var(--purple);}
+  .track p.desc{margin:0 0 14px 0; color:var(--ink-soft);}
+  .track ul.next{margin:0 0 12px 0; padding-left:20px; font-size:0.92rem; color:var(--ink-soft);}
+  .track ul.next li{margin-bottom:5px;}
+  .specialist{font-size:0.85rem; font-weight:700; color:var(--purple-dark);}
+
+  /* teaser tracks show only the band, no detail, before email capture */
+  .track.teaser p.desc, .track.teaser ul.next, .track.teaser .specialist{display:none;}
+
+  .email-card{
+    background:var(--white); border:1px solid var(--border); border-radius:var(--radius);
+    padding:28px; margin:28px 0; text-align:center;
+  }
+  .email-card h3{font-size:1.25rem; margin-bottom:0.3em;}
+  .email-sub{color:var(--ink-soft); font-size:0.92rem; max-width:44ch; margin:0 auto 20px auto;}
+  #email-form{max-width:400px; margin:0 auto; text-align:left;}
+  #email-form input[type="text"], #email-form input[type="email"]{
+    width:100%; padding:13px 14px; border:1.5px solid var(--border); border-radius:10px;
+    font-size:0.98rem; font-family:inherit; margin-bottom:12px;
+  }
+  #email-form input:focus{outline:none; border-color:var(--purple);}
+  .consent{display:flex; align-items:flex-start; gap:10px; font-size:0.85rem; color:var(--ink-soft); margin-bottom:12px; cursor:pointer;}
+  .consent input{margin-top:3px; flex:none;}
+  .form-error{color:var(--berry, #C2367B); font-size:0.85rem; margin-top:10px; text-align:center;}
+
+  .confirm-card{
+    background:var(--purple-pale); border-radius:var(--radius); padding:32px; margin:28px 0; text-align:center;
+  }
+  .confirm-icon{
+    width:52px; height:52px; border-radius:50%; background:var(--white); margin:0 auto 14px auto;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .confirm-card h3{font-size:1.2rem; margin-bottom:0.3em;}
+  .confirm-card p{color:var(--ink-soft); font-size:0.95rem; max-width:40ch; margin:0 auto;}
+
+  .review-note{
+    display:flex; gap:14px; align-items:flex-start; background:var(--purple-pale);
+    border-radius:12px; padding:20px 22px; margin:28px 0; border-left:4px solid var(--purple);
+  }
+  .review-note p{font-size:0.92rem; color:var(--ink);}
+
+  .affiliate{margin-top:36px;}
+  .aff-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:16px;}
+  @media (max-width:600px){ .aff-grid{grid-template-columns:1fr;} }
+  .aff-card{background:var(--white); border:1px solid var(--border); border-radius:12px; padding:16px; font-size:0.9rem;}
+  .aff-tag{display:block; font-size:0.72rem; font-weight:700; color:var(--purple); margin-bottom:6px; text-transform:uppercase;}
+
+  .book-cta{
+    margin-top:36px; text-align:center; padding:38px 24px; background:var(--purple-dark);
+    color:var(--white); border-radius:var(--radius);
+  }
+  .book-cta h3{color:var(--white); font-size:1.4rem;}
+  .book-cta p{color:#E0C9F5; max-width:44ch; margin:0.6em auto 22px auto;}
+
+  [hidden]{display:none !important;}
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
+</style>
+</head>
+<body style="background:#FAF8FC;">
+
+<header>
+  <div class="wrap brand">
+    <span class="brand-badge">TFP</span>
+    <span class="brand-name">The Full Picture</span>
+  </div>
+</header>
+
+<!-- ================= LANDING ================= -->
+<section id="landing">
+  <div class="hero-band">
+    <div class="wrap hero">
+      <span class="eyebrow-light">Free women's health check</span>
+      <h1>Understand your hormones, mind and body at every stage.</h1>
+      <p class="lede">A free, personalised health check covering menopause, motherhood and long-term strength. Reviewed by a qualified practitioner before it reaches you.</p>
+      <div class="badges">
+        <span class="badge">Takes 3 minutes</span>
+        <span class="badge">Reviewed by a practitioner</span>
+        <span class="badge">Not a diagnosis</span>
+      </div>
+      <br>
+      <button class="cta" id="start-btn">Start the free check <span aria-hidden="true">&rarr;</span></button>
+      <span class="cta-sub">Your answers are kept confidential.</span>
+    </div>
+  </div>
+</section>
+
+<section id="for-you">
+  <div class="wrap">
+    <div class="section-head center">
+      <span class="eyebrow">Who this is for</span>
+      <h2 class="section-title">Three stages. One picture.</h2>
+    </div>
+
+    <div class="avatars" aria-hidden="true">
+      <div class="avatar a1">
+        <svg width="52" height="52" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="#C2367B"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" fill="#C2367B"/></svg>
+      </div>
+      <div class="avatar a2">
+        <svg width="60" height="60" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4.4" fill="#7C2AE8"/><path d="M3.5 21.5c0-4.9 3.8-8.5 8.5-8.5s8.5 3.6 8.5 8.5" fill="#7C2AE8"/></svg>
+      </div>
+      <div class="avatar a3">
+        <svg width="52" height="52" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="#C9A227"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" fill="#C9A227"/></svg>
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <h3>Perimenopause &amp; menopause</h3>
+        <p>Understand your symptoms, what's driving them, and what your options actually are.</p>
+      </div>
+      <div class="card">
+        <h3>Pregnancy &amp; postnatal</h3>
+        <p>A check-in on your mood, recovery and support, at a stage that's easy to move through unheard.</p>
+      </div>
+      <div class="card">
+        <h3>Bone, brain &amp; strength</h3>
+        <p>Protect your independence for decades ahead, starting with where you stand today.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ask">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow-light">What we'll ask about</span>
+      <h2 class="section-title">Six areas, matched to your stage of life.</h2>
+    </div>
+    <div class="icon-grid">
+      <div class="item">
+        <div class="icon-badge"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 21s-8-4.6-8-11.2C4 6 6.5 4 9.2 4c1.6 0 3 .8 3.8 2.2C13.8 4.8 15.2 4 16.8 4 19.5 4 22 6 22 9.8 22 16.4 12 21 12 21z" fill="#fff"/></svg></div>
+        <span>Hormones</span>
+      </div>
+      <div class="item">
+        <div class="icon-badge"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="7" r="4" fill="#fff"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" fill="#fff"/></svg></div>
+        <span>Mood &amp; support</span>
+      </div>
+      <div class="item">
+        <div class="icon-badge"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M6 3v6l-3 3 3 3v6h4v-4h6v4h4v-6l-3-3 3-3V3h-4v4H10V3H6z" fill="#fff"/></svg></div>
+        <span>Bones &amp; strength</span>
+      </div>
+      <div class="item">
+        <div class="icon-badge"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm1 5v4.6l3.5 2.1-.75 1.25L11 13V8h2z" fill="#fff"/></svg></div>
+        <span>Sleep</span>
+      </div>
+      <div class="item">
+        <div class="icon-badge"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 6a3.5 3.5 0 100 7 3.5 3.5 0 000-7zm0 9c-3.3 0-9 1.6-9 5v2h18v-2c0-3.4-5.7-5-9-5z" fill="#fff"/></svg></div>
+        <span>Memory &amp; focus</span>
+      </div>
+      <div class="item">
+        <div class="icon-badge"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 6v6c0 5 3.4 9.3 8 10 4.6-.7 8-5 8-10V6l-8-4z" fill="#fff"/></svg></div>
+        <span>Family history</span>
+      </div>
+    </div>
+    <p class="note">This isn't a medical assessment. It's a starting point, built with input from practitioners, and every report is checked by one before it reaches you.</p>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow">How it works</span>
+      <h2 class="section-title">Three steps, no waiting room.</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="step-icon">1</div><h3>Take the check</h3><p>A few minutes of honest questions, matched to your stage of life.</p></div>
+      <div class="step"><div class="step-icon">2</div><h3>Get your report</h3><p>A personal, plain-language summary, reviewed by a practitioner before it's sent.</p></div>
+      <div class="step"><div class="step-icon">3</div><h3>Book, if you want to</h3><p>Take it to a consultation, or simply keep it for yourself.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="get">
+  <div class="wrap center">
+    <span class="eyebrow">What you'll get</span>
+    <h2 class="section-title">Something to act on, not just a list of symptoms.</h2>
+    <ul class="getlist">
+      <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>A clear picture of what's going on with your hormones, mood or strength right now</li>
+      <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Practical next steps you can start this week</li>
+      <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>A recommendation for which specialist is right for you, if any</li>
+    </ul>
+    <div class="reassure">
+      <p><strong>This is not a diagnosis.</strong> It's a starting point for a conversation with a practitioner who can actually help.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>This health check is for informational purposes and does not replace medical advice. Every report is reviewed by a qualified practitioner before it is issued to you.</p>
+  </div>
+</footer>
+
+<!-- ================= QUIZ ================= -->
+<section id="quiz" hidden>
+  <div class="wrap">
+    <div class="progress-label" id="progress-label">Question 1</div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <div id="question-mount"></div>
+    <div class="quiz-nav">
+      <button class="btn-ghost" id="back-btn">Back</button>
+      <button class="btn-primary" id="next-btn">Continue</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= REPORT ================= -->
+<section id="report" hidden>
+  <div class="wrap">
+    <div class="report-head">
+      <span class="eyebrow">Your results</span>
+      <h1>Here's a first look</h1>
+      <p>Your full report, with next steps and specialist recommendations, is reviewed by a practitioner before it's sent to you.</p>
+    </div>
+
+    <div id="tracks-mount"></div>
+
+    <div class="email-card" id="email-card">
+      <h3>Get your full personalised report</h3>
+      <p class="email-sub">Practical next steps, a specialist recommendation, and a practitioner's review, sent to your inbox.</p>
+
+      <form id="email-form">
+        <input type="text" id="nameInput" placeholder="First name (optional)" autocomplete="given-name">
+        <input type="email" id="emailInput" placeholder="Email address" required autocomplete="email">
+
+        <label class="consent">
+          <input type="checkbox" id="marketingConsent" required>
+          <span>Send me my full report and occasional emails relevant to what I answered today</span>
+        </label>
+        <label class="consent">
+          <input type="checkbox" id="partnerConsent">
+          <span>I'm also happy to hear from relevant specialist partners (optional)</span>
+        </label>
+
+        <button type="submit" class="btn-primary ready" id="submitEmailBtn" style="width:100%; margin-top:16px;">Send me my full report</button>
+        <p class="form-error" id="formError" hidden></p>
+      </form>
+    </div>
+
+    <div class="confirm-card" id="confirm-card" hidden>
+      <div class="confirm-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="#0B5D52" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h3>Check your inbox</h3>
+      <p>We've sent you a link to view and download your full report. If you don't see it in a minute or two, it's worth checking your spam or junk folder, first emails from a new sender often land there by mistake.</p>
+    </div>
+
+    <div class="review-note">
+      <div>
+        <p><strong>Every report is reviewed by a qualified practitioner</strong> before it's sent. This is a starting point, not a diagnosis, it's designed to make your next conversation more useful, whether that's with us or your own GP.</p>
+      </div>
+    </div>
+
+    <div class="affiliate">
+      <span class="eyebrow">You might also find useful</span>
+      <div class="aff-grid" id="aff-mount"></div>
+    </div>
+
+    <div class="book-cta">
+      <h3>Want to talk it through?</h3>
+      <p>Book a short consultation with a practitioner to go through your results and what to do next.</p>
+      <button class="cta" style="margin-top:0;" id="book-btn">Book a consultation</button>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var landing = document.getElementById('landing');
+  var forYou = document.getElementById('for-you');
+  var ask = document.getElementById('ask');
+  var how = document.getElementById('how');
+  var get = document.getElementById('get');
+  var footer = document.querySelector('footer');
+  var quiz = document.getElementById('quiz');
+  var report = document.getElementById('report');
+
+  var answers = {};
+
+  var questions = [
+    { id:'lifeStage', section:'gate', text:"Which of these best describes you right now?", type:'single',
+      options:['Trying to conceive','Pregnant','Postnatal (within 2 years)','Perimenopause','Menopause','Postmenopause','None of these currently apply'] },
+    { id:'sleep', section:'core', text:"How would you rate your sleep quality over the past month?", type:'single',
+      options:['Very poor','Poor','Fair','Good','Very good'] },
+    { id:'energy', section:'core', text:"How would you describe your energy levels day to day?", type:'single',
+      options:['Low most days','Variable','Generally good','Consistently high'] },
+    { id:'strength', section:'core', text:"How often do you currently do strength or resistance training?", type:'single',
+      options:['Never','Occasionally','1 to 2 times a week','3 or more times a week'] },
+    { id:'familyHistory', section:'core', text:"Does anyone in your immediate family have a history of osteoporosis or early menopause, before 45?", type:'single',
+      options:['Yes','No','Not sure'] },
+    { id:'memory', section:'core', text:"Have you noticed any changes in memory, focus or mental clarity recently?", type:'single',
+      options:['No change','Slight change','Noticeable change','Significant change'] },
+
+    { id:'symptoms', section:'menopause', text:"Which of these are you currently experiencing?", type:'multi',
+      options:['Hot flushes','Night sweats','Mood changes','Brain fog','Joint pain','Sleep disruption','Low libido','None of these'],
+      showIf: function(a){ return ['Perimenopause','Menopause','Postmenopause'].indexOf(a.lifeStage) > -1; } },
+    { id:'severity', section:'menopause', text:"How much are these symptoms affecting your daily life?", type:'single',
+      options:['Not at all','A little','Moderately','Significantly'],
+      showIf: function(a){ return ['Perimenopause','Menopause','Postmenopause'].indexOf(a.lifeStage) > -1; } },
+    { id:'periods', section:'menopause', text:"Are your periods still regular, irregular, or have they stopped?", type:'single',
+      options:['Regular','Irregular','Stopped'],
+      showIf: function(a){ return ['Perimenopause','Menopause','Postmenopause'].indexOf(a.lifeStage) > -1; } },
+    { id:'hrt', section:'menopause', text:"Have you previously used or considered HRT?", type:'single',
+      options:['Currently using','Used previously','Considered but not started','Not considered','Not interested'],
+      showIf: function(a){ return ['Perimenopause','Menopause','Postmenopause'].indexOf(a.lifeStage) > -1; } },
+
+    { id:'mood', section:'maternal', text:"How would you describe your general mood recently?", type:'single',
+      options:['Coping well','Some low days','Struggling more days than not','Prefer not to say'],
+      showIf: function(a){ return ['Pregnant','Postnatal (within 2 years)'].indexOf(a.lifeStage) > -1; } },
+    { id:'support', section:'maternal', text:"Do you feel you have enough support around you day to day?", type:'single',
+      options:['Yes, plenty','Some, could use more','Very little'],
+      showIf: function(a){ return ['Pregnant','Postnatal (within 2 years)'].indexOf(a.lifeStage) > -1; } },
+    { id:'sleepDisruption', section:'maternal', text:"Is sleep disruption affecting your ability to function during the day?", type:'single',
+      options:['Not really','Somewhat','Significantly'],
+      showIf: function(a){ return ['Pregnant','Postnatal (within 2 years)'].indexOf(a.lifeStage) > -1; } },
+
+    { id:'falls', section:'strength', text:"Have you had any falls or balance concerns in the past year?", type:'single',
+      options:['No','One','More than one'] },
+    { id:'weightBearing', section:'strength', text:"Do you spend regular time on weight-bearing activity, like walking or resistance training?", type:'single',
+      options:['Rarely','Sometimes','Regularly'] },
+    { id:'boneCheck', section:'strength', text:"Are you currently taking calcium or vitamin D, or have you had a bone density scan?", type:'single',
+      options:['Neither','One of these','Both','Not sure'] }
+  ];
+
+  function visibleQuestions(){
+    return questions.filter(function(q){ return !q.showIf || q.showIf(answers); });
+  }
+
+  var currentIndex = 0;
+
+  function renderQuestion(){
+    var qs = visibleQuestions();
+    var q = qs[currentIndex];
+    var mount = document.getElementById('question-mount');
+    var sectionLabel = { gate:'Getting started', core:'General', menopause:'Menopause and hormones', maternal:'Motherhood', strength:'Bone, brain and strength' }[q.section];
+
+    var html = '<div class="q-eyebrow">' + sectionLabel + '</div>';
+    html += '<div class="q-text">' + q.text + '</div>';
+    html += '<div class="options" role="group" aria-label="' + q.text + '">';
+    q.options.forEach(function(opt){
+      var selected = q.type === 'multi'
+        ? (answers[q.id] && answers[q.id].indexOf(opt) > -1)
+        : answers[q.id] === opt;
+      html += '<button class="opt' + (selected ? ' selected' : '') + '" data-opt="' + opt.replace(/"/g,'&quot;') + '">' + opt + '</button>';
+    });
+    html += '</div>';
+    mount.innerHTML = html;
+
+    mount.querySelectorAll('.opt').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var opt = btn.getAttribute('data-opt');
+        if(q.type === 'multi'){
+          answers[q.id] = answers[q.id] || [];
+          var i = answers[q.id].indexOf(opt);
+          if(i > -1){ answers[q.id].splice(i,1); } else { answers[q.id].push(opt); }
+        } else {
+          answers[q.id] = opt;
+        }
+        renderQuestion();
+      });
+    });
+
+    document.getElementById('back-btn').style.visibility = currentIndex === 0 ? 'hidden' : 'visible';
+    document.getElementById('progress-label').textContent = 'Question ' + (currentIndex+1) + ' of ' + qs.length;
+    updateProgress();
+    updateNav();
+  }
+
+  function updateNav(){
+    var qs = visibleQuestions();
+    var q = qs[currentIndex];
+    var answered = q.type === 'multi' ? (answers[q.id] && answers[q.id].length > 0) : !!answers[q.id];
+    var nextBtn = document.getElementById('next-btn');
+    nextBtn.classList.toggle('ready', !!answered);
+    nextBtn.textContent = (currentIndex === qs.length - 1) ? 'See my report' : 'Continue';
+  }
+
+  function updateProgress(){
+    var qs = visibleQuestions();
+    var pct = Math.round(((currentIndex) / qs.length) * 100);
+    document.getElementById('progress-fill').style.width = pct + '%';
+  }
+
+  document.getElementById('start-btn').addEventListener('click', function(){
+    [landing, forYou, ask, how, get, footer].forEach(function(el){ el.hidden = true; });
+    quiz.hidden = false;
+    answers = {};
+    currentIndex = 0;
+    window.scrollTo(0,0);
+    renderQuestion();
+  });
+
+  document.getElementById('back-btn').addEventListener('click', function(){
+    if(currentIndex > 0){ currentIndex--; renderQuestion(); window.scrollTo(0,0); }
+  });
+
+  document.getElementById('next-btn').addEventListener('click', function(){
+    var qs = visibleQuestions();
+    if(!document.getElementById('next-btn').classList.contains('ready')) return;
+    if(currentIndex < qs.length - 1){
+      currentIndex++;
+      renderQuestion();
+      window.scrollTo(0,0);
+    } else {
+      showReport();
+    }
+  });
+
+  function bandLabel(score, thresholds){
+    if(score <= thresholds[0]) return 'low';
+    if(score <= thresholds[1]) return 'mid';
+    return 'high';
+  }
+
+  function scoreMenopause(){
+    var symptomCount = (answers.symptoms || []).filter(function(s){ return s !== 'None of these'; }).length;
+    var severityMap = {'Not at all':0,'A little':1,'Moderately':2,'Significantly':3};
+    var severity = severityMap[answers.severity] || 0;
+    return bandLabel(symptomCount + severity * 2, [2, 6]);
+  }
+  function scoreMaternal(){
+    var moodMap = {'Coping well':0,'Some low days':1,'Struggling more days than not':3,'Prefer not to say':1};
+    var supportMap = {'Yes, plenty':0,'Some, could use more':1,'Very little':2};
+    var sleepMap = {'Not really':0,'Somewhat':1,'Significantly':2};
+    return bandLabel((moodMap[answers.mood]||0) + (supportMap[answers.support]||0) + (sleepMap[answers.sleepDisruption]||0), [1, 3]);
+  }
+  function scoreStrength(){
+    var strengthMap = {'Never':2,'Occasionally':1,'1 to 2 times a week':0,'3 or more times a week':0};
+    var fallsMap = {'No':0,'One':1,'More than one':2};
+    var wbMap = {'Rarely':2,'Sometimes':1,'Regularly':0};
+    var boneMap = {'Neither':2,'One of these':1,'Both':0,'Not sure':1};
+    return bandLabel((strengthMap[answers.strength]||0) + (fallsMap[answers.falls]||0) + (wbMap[answers.weightBearing]||0) + (boneMap[answers.boneCheck]||0), [1, 4]);
+  }
+
+  var bandCopy = {
+    menopause: {
+      low: {label:'Steady', text:"Your hormone-related symptoms seem mild or well managed right now. Worth checking back in as things shift.",
+            next:['Keep a light symptom note if anything changes','Revisit this check in 3 to 6 months']},
+      mid: {label:'Worth a closer look', text:"You're noticing a real mix of symptoms that are starting to affect daily life. There's a lot that can help here.",
+            next:['Talk through symptom relief options with a practitioner','Ask about hormone testing if you haven\'t had it done']},
+      high:{label:'A focus area', text:"Your symptoms are significantly affecting daily life right now. This is very treatable, and worth prioritising.",
+            next:['Book a consultation to discuss options, including HRT','Ask about hormone testing to build a full picture']}
+    },
+    maternal: {
+      low: {label:'Coping', text:"You're managing well right now. This stage can shift quickly, so it's worth checking in with yourself regularly.",
+            next:['Keep leaning on the support around you','Revisit this if anything changes']},
+      mid: {label:'Some strain showing', text:"There are signs you're under more strain than you'd like to be. That's common, and support helps.",
+            next:['Talk to your GP or health visitor about how you\'re feeling','Ask for more practical support where you can']},
+      high:{label:'Worth talking to someone', text:"What you've shared suggests you're finding this stage genuinely hard right now. Please don't sit with this alone.",
+            next:['Speak with your GP or health visitor soon','Let someone close to you know how you\'re actually doing']}
+    },
+    strength: {
+      low: {label:'Strong foundation', text:"Your habits and history point to good bone and strength resilience right now. Keep it up.",
+            next:['Maintain your current strength routine','Recheck in a year']},
+      mid: {label:'Some factors to watch', text:"A few things here are worth paying attention to before they become bigger issues.",
+            next:['Add weight-bearing activity a couple of times a week','Ask about a bone density scan if you haven\'t had one']},
+      high:{label:'Worth prioritising', text:"Several factors here suggest your bone health and physical resilience deserve real attention now.",
+            next:['Book a consultation to discuss a bone density scan','Start a structured strength routine, ideally with guidance']}
+    }
+  };
+
+  var specialistMap = { menopause:'Recommended: Menopause specialist', maternal:'Recommended: GP or health visitor', strength:'Recommended: Practitioner or strength coach' };
+
+  var affiliateBank = [
+    {tag:'Sleep', name:'Magnesium glycinate, evening blend'},
+    {tag:'Bone health', name:'Vitamin D3 and K2 combination'},
+    {tag:'Strength', name:'Beginner resistance programme, 8 weeks'},
+    {tag:'Recovery', name:'Postnatal support wrap and guide'}
+  ];
+
+  var API_BASE = 'https://womens-health-backend.onrender.com';
+  var submittedLeadId = null;
+
+  function showReport(){
+    quiz.hidden = true;
+    report.hidden = false;
+    window.scrollTo(0,0);
+
+    var tracksMount = document.getElementById('tracks-mount');
+    var html = '';
+
+    var isMenopauseStage = ['Perimenopause','Menopause','Postmenopause'].indexOf(answers.lifeStage) > -1;
+    var isMaternalStage = ['Pregnant','Postnatal (within 2 years)'].indexOf(answers.lifeStage) > -1;
+
+    // Teaser only: band label, no detail, no next steps. Full version arrives by email once reviewed.
+    if(isMenopauseStage){
+      html += trackHTML('magenta', 'Menopause and Hormones', scoreMenopause(), bandCopy.menopause[scoreMenopause()]);
+    }
+    if(isMaternalStage){
+      html += trackHTML('', 'Maternal Wellbeing', scoreMaternal(), bandCopy.maternal[scoreMaternal()]);
+    }
+    html += trackHTML('gold', 'Bone, Brain and Strength', scoreStrength(), bandCopy.strength[scoreStrength()]);
+
+    tracksMount.innerHTML = html;
+
+    var affMount = document.getElementById('aff-mount');
+    var affHtml = '';
+    affiliateBank.forEach(function(item){
+      affHtml += '<div class="aff-card"><span class="aff-tag">' + item.tag + '</span>' + item.name + '</div>';
+    });
+    affMount.innerHTML = affHtml;
+  }
+
+  function trackHTML(colorClass, title, band, copy){
+    return '' +
+      '<div class="track teaser ' + colorClass + '">' +
+        '<h3>' + title + '</h3>' +
+        '<span class="band ' + band + '">' + copy.label + '</span>' +
+      '</div>';
+  }
+
+  document.getElementById('email-form').addEventListener('submit', function(e){
+    e.preventDefault();
+
+    var errorEl = document.getElementById('formError');
+    errorEl.hidden = true;
+
+    var submitBtn = document.getElementById('submitEmailBtn');
+    submitBtn.textContent = 'Sending...';
+    submitBtn.classList.remove('ready');
+
+    var payload = {
+      name: document.getElementById('nameInput').value || null,
+      email: document.getElementById('emailInput').value,
+      marketing_consent: document.getElementById('marketingConsent').checked,
+      partner_share_consent: document.getElementById('partnerConsent').checked,
+      life_stage: answers.lifeStage,
+      answers: answers
+    };
+
+    fetch(API_BASE + '/api/leads', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(function(r){
+      if(!r.ok) throw new Error('Something went wrong sending that. Please try again.');
+      return r.json();
+    })
+    .then(function(lead){
+      submittedLeadId = lead.id;
+      document.getElementById('email-card').hidden = true;
+      document.getElementById('confirm-card').hidden = false;
+    })
+    .catch(function(err){
+      errorEl.textContent = err.message;
+      errorEl.hidden = false;
+      submitBtn.textContent = 'Send me my full report';
+      submitBtn.classList.add('ready');
+    });
+  });
+
+  document.getElementById('book-btn').addEventListener('click', function(){
+    if(submittedLeadId){
+      fetch(API_BASE + '/api/leads/' + submittedLeadId + '/book-click', { method: 'POST' }).catch(function(){});
+    }
+  });
+
+})();
+</script>
+</body>
+</html>

@@ -17,11 +17,17 @@
   .status{display:inline-block; font-size:0.72rem; font-weight:700; padding:4px 12px; border-radius:100px; text-transform:uppercase; margin-bottom:14px;}
   .status.pending_review{background:#FBE7F1; color:#C2367B;}
   .status.reviewed{background:#F1E7FB; color:#7C2AE8;}
-  .track{background:#FAF8FC; border-radius:10px; padding:16px 18px; margin-top:12px;}
-  .track h3{font-size:1.05rem; margin:0 0 4px 0; color:#2E0854;}
-  .track .band{font-weight:700; font-size:0.88rem; color:#7C2AE8;}
-  .track p{font-size:0.92rem; color:#5B4E6D; margin-top:6px;}
-  .track ul{margin:8px 0 0 0; padding-left:18px; font-size:0.9rem; color:#5B4E6D;}
+  .track{background:#FAF8FC; border-radius:10px; padding:18px 20px; margin-top:12px; border-left:4px solid #7C2AE8;}
+  .track h3{font-size:1.15rem; margin:0 0 4px 0; color:#2E0854;}
+  .track .band{font-weight:700; font-size:0.9rem; color:#7C2AE8; display:block; margin-bottom:8px;}
+  .track p{font-size:0.92rem; color:#5B4E6D; margin-top:6px; line-height:1.5;}
+  .track .summary{font-weight:600; color:#241933;}
+  .track h4{font-size:0.85rem; color:#2E0854; margin:14px 0 4px 0; text-transform:uppercase; letter-spacing:0.03em;}
+  .track ul{margin:6px 0 0 0; padding-left:18px; font-size:0.9rem; color:#5B4E6D; line-height:1.5;}
+  .track ul li{margin-bottom:4px;}
+  .track .specialist-box{background:white; border:1px solid #E4D9F0; border-radius:8px; padding:12px 14px; margin-top:10px;}
+  .track .specialist-name{font-weight:700; color:#2E0854; font-size:0.92rem;}
+  .overview-line{font-size:0.98rem; color:#2E0854; font-weight:600; margin-bottom:18px; line-height:1.5;}
   button, .btn-link{
     display:inline-block; padding:13px 22px; border-radius:100px; border:none; font-weight:700;
     cursor:pointer; font-size:0.95rem; text-decoration:none; text-align:center;
@@ -74,13 +80,31 @@
 
     var tracksHtml = Object.keys(data.report.tracks).map(function(key){
       var t = data.report.tracks[key];
-      var nextItems = (t.next || []).map(function(n){ return '<li>' + n + '</li>'; }).join('');
-      return '<div class="track"><h3>' + t.title + '</h3><div class="band">' + t.label + '</div><p>' + t.text + '</p><ul>' + nextItems + '</ul></div>';
+      var nextItems = (t.next_steps || []).map(function(n){ return '<li>' + n + '</li>'; }).join('');
+      var tipItems = (t.lifestyle_tips || []).map(function(n){ return '<li>' + n + '</li>'; }).join('');
+      var html = '<div class="track">';
+      html += '<h3>' + t.title + '</h3>';
+      html += '<span class="band">' + t.label + '</span>';
+      html += '<p class="summary">' + t.summary + '</p>';
+      if(t.why_it_matters){ html += '<h4>Why this matters</h4><p>' + t.why_it_matters + '</p>'; }
+      if(nextItems){ html += '<h4>Your next steps</h4><ul>' + nextItems + '</ul>'; }
+      if(tipItems){ html += '<h4>Lifestyle tips</h4><ul>' + tipItems + '</ul>'; }
+      if(t.when_to_seek_help){ html += '<h4>When to seek help</h4><p>' + t.when_to_seek_help + '</p>'; }
+      if(t.specialist){
+        html += '<div class="specialist-box"><div class="specialist-name">' + t.specialist + '</div>';
+        if(t.specialist_expect){ html += '<p style="margin-top:4px;">' + t.specialist_expect + '</p>'; }
+        html += '</div>';
+      }
+      html += '</div>';
+      return html;
     }).join('');
+
+    var overviewHtml = data.report.overview ? '<p class="overview-line">' + data.report.overview + '</p>' : '';
 
     content.innerHTML = '' +
       '<div class="card">' +
         '<span class="status ' + data.status + '">' + data.status.replace('_',' ') + '</span>' +
+        overviewHtml +
         tracksHtml +
       '</div>' +
       '<div class="card" style="text-align:center;">' +
