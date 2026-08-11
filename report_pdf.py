@@ -100,18 +100,11 @@ def build_report_pdf(user_name: str, life_stage: str, report: dict, reviewed: bo
             if t.get("specialist_expect"):
                 story.append(Paragraph(t["specialist_expect"], specialist_box_style))
 
-        story.append(PageBreak())
+        story.append(Spacer(1, 18))
+        story.append(HRFlowable(width="100%", color=HexColor("#E4D9F0"), thickness=0.75))
+        story.append(Spacer(1, 18))
 
-    # ---------- Action plan summary ----------
-    story.append(Paragraph("Your action plan", track_title_style))
-    story.append(Paragraph("A short summary pulling together the single most useful next step from each area above.", body_style))
-    for key in tracks:
-        t = tracks[key]
-        first_step = t["next_steps"][0] if t.get("next_steps") else ""
-        story.append(Paragraph(t["title"], subhead_style))
-        story.append(Paragraph(f"&bull; {first_step}", bullet_style))
-
-    story.append(Spacer(1, 24))
+    story.append(Spacer(1, 10))
     story.append(HRFlowable(width="100%", color=HexColor("#E4D9F0"), thickness=1))
     story.append(Paragraph(
         "This report is for informational purposes and does not replace medical advice. "
