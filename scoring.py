@@ -340,6 +340,14 @@ SPECIALIST_MAP = {
     },
 }
 
+TRACK_EDUCATION = {
+    "menopause": "Menopause is defined as twelve months without a period, usually happening between 45 and 55, though it can happen earlier. Perimenopause, the years leading up to it, is when oestrogen and progesterone levels start to fluctuate, and it's this fluctuation, not just the eventual drop, that drives most symptoms. It typically lasts four to eight years, though this varies widely. Around 80% of women experience some symptoms, and for roughly a quarter, those symptoms are severe enough to significantly affect daily life. Despite how common it is, menopause care has historically been under-discussed and under-treated, which is changing, but it means many people reach this stage without a clear sense of what's normal or what help is available.",
+    "maternal": "Pregnancy and the first two years postnatal involve some of the most significant physical and hormonal change the body goes through. Around one in five women experience a mental health difficulty during pregnancy or in the year after birth, ranging from mild low mood to more significant anxiety or depression, making it one of the most common complications of this stage, not a rare or unusual one. Physical recovery also varies enormously and isn't limited to the first few weeks, many people are still adjusting physically and emotionally well beyond that. Screening and support at this stage are standard parts of NHS maternity and postnatal care, not an escalation or a sign that something has gone wrong.",
+    "strength": "Bone density peaks around age 30 and gradually declines afterward, with the rate of loss accelerating for several years around menopause due to the drop in oestrogen, which plays a protective role in bone maintenance. Roughly one in two women over 50 will experience a fracture related to bone density at some point. The encouraging part is that bone health responds well to modifiable factors, weight-bearing exercise, resistance training, calcium and vitamin D intake, and avoiding smoking and excess alcohol all measurably affect long-term bone density, at any age. Falls risk and balance are equally important, since most fractures happen as a result of a fall, not spontaneously.",
+    "preconception": "Fertility is influenced by a wide range of factors, cycle regularity, general health, age, and lifestyle among them. For couples with no known fertility issues, roughly 80 to 85% conceive within a year of regularly trying, and most of the remainder conceive within a further year. Folic acid supplementation before and during early pregnancy is one of the most well-evidenced preventative health measures available, meaningfully reducing the risk of certain birth defects. Lifestyle factors, smoking, regular alcohol, and high caffeine intake, have a real, measurable effect on fertility for both partners, which is why addressing them is one of the most useful things either partner can do while trying to conceive.",
+}
+
+
 TRACK_TITLES = {
     "menopause": "Menopause and Hormones",
     "maternal": "Maternal Wellbeing",
@@ -370,6 +378,7 @@ def build_report(life_stage: str, answers: dict) -> dict:
             **BAND_COPY["menopause"][band],
             "specialist": SPECIALIST_MAP["menopause"]["name"],
             "specialist_expect": SPECIALIST_MAP["menopause"]["expect"],
+            "education": TRACK_EDUCATION["menopause"],
         }
 
     if life_stage in MATERNAL_STAGES:
@@ -380,6 +389,7 @@ def build_report(life_stage: str, answers: dict) -> dict:
             **BAND_COPY["maternal"][band],
             "specialist": SPECIALIST_MAP["maternal"]["name"],
             "specialist_expect": SPECIALIST_MAP["maternal"]["expect"],
+            "education": TRACK_EDUCATION["maternal"],
         }
 
     if life_stage in PRECONCEPTION_STAGES:
@@ -390,6 +400,7 @@ def build_report(life_stage: str, answers: dict) -> dict:
             **BAND_COPY["preconception"][band],
             "specialist": SPECIALIST_MAP["preconception"]["name"],
             "specialist_expect": SPECIALIST_MAP["preconception"]["expect"],
+            "education": TRACK_EDUCATION["preconception"],
         }
 
     band = score_strength(answers)
@@ -399,6 +410,7 @@ def build_report(life_stage: str, answers: dict) -> dict:
         **BAND_COPY["strength"][band],
         "specialist": SPECIALIST_MAP["strength"]["name"],
         "specialist_expect": SPECIALIST_MAP["strength"]["expect"],
+        "education": TRACK_EDUCATION["strength"],
     }
 
     overview = OVERVIEW_BY_STAGE.get(life_stage, "")
