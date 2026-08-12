@@ -467,6 +467,11 @@
 
   var answers = {};
 
+  var MATERNAL_STAGES = ['Pregnant','Postnatal (within 2 years)'];
+  var MENOPAUSE_STAGES = ['Perimenopause','Menopause','Postmenopause'];
+  var PERIODS_STAGES = ['Trying to conceive','Perimenopause','None of these currently apply'];
+  var PREGNANCY_CHOICE_STAGES = ['Trying to conceive','Pregnant','Perimenopause','None of these currently apply'];
+
   var questions = [
     { id:'lifeStage', section:'gate', text:"Which of these best describes you right now?", type:'single',
       options:['Trying to conceive','Pregnant','Postnatal (within 2 years)','Perimenopause','Menopause','Postmenopause','None of these currently apply'] },
@@ -509,7 +514,74 @@
     { id:'weightBearing', section:'strength', text:"Do you spend regular time on weight-bearing activity, like walking or resistance training?", type:'single',
       options:['Rarely','Sometimes','Regularly'] },
     { id:'boneCheck', section:'strength', text:"Are you currently taking calcium or vitamin D, or have you had a bone density scan?", type:'single',
-      options:['Neither','One of these','Both','Not sure'] }
+      options:['Neither','One of these','Both','Not sure'] },
+
+    { id:'periodPain', section:'periods', text:"How would you describe period pain, if you have periods?", type:'single',
+      options:['No periods currently','Mild or manageable','Moderate, affects some days','Severe, affects daily life'],
+      showIf: function(a){ return PERIODS_STAGES.indexOf(a.lifeStage) > -1; } },
+    { id:'periodFlow', section:'periods', text:"How would you describe your period flow?", type:'single',
+      options:['No periods currently','Light','Moderate','Heavy, needs frequent changes or overnight protection'],
+      showIf: function(a){ return PERIODS_STAGES.indexOf(a.lifeStage) > -1; } },
+    { id:'pmsImpact', section:'periods', text:"How much do symptoms in the days before your period (mood, bloating, breast tenderness) affect you?", type:'single',
+      options:['Not at all','A little','Moderately','Significantly'],
+      showIf: function(a){ return PERIODS_STAGES.indexOf(a.lifeStage) > -1; } },
+    { id:'contraception', section:'periods', text:"Are you currently using contraception?", type:'single',
+      options:['Not using any','Hormonal (pill, patch, ring, injection)','Long-acting (coil or implant)','Barrier methods (condoms, diaphragm)','Natural family planning','Not applicable right now'],
+      showIf: function(a){ return a.lifeStage === 'Perimenopause' || a.lifeStage === 'None of these currently apply'; } },
+
+    { id:'bladderLeaks', section:'pelvic', text:"Do you ever leak urine when you cough, sneeze, exercise, or feel a sudden urge?", type:'single',
+      options:['Never','Occasionally','Regularly','Most days'] },
+    { id:'pelvicFloorExercise', section:'pelvic', text:"Do you currently do pelvic floor exercises?", type:'single',
+      options:['Regularly','Occasionally','Never','Not sure how to'] },
+    { id:'pelvicSymptoms', section:'pelvic', text:"Have you noticed any of these recently?", type:'multi',
+      options:['Pelvic pain','Unusual vaginal discharge or irritation','Pain during sex','Bloating that doesn\'t settle','Changes to your vulva or vagina you\'ve noticed','None of these'] },
+    { id:'utiFrequency', section:'pelvic', text:"How often do you get urinary tract infections (UTIs)?", type:'single',
+      options:['Never or rarely','Occasionally, a few times a year','Frequently, most months'] },
+
+    { id:'breastChecks', section:'breast', text:"How often do you check your breasts for changes?", type:'single',
+      options:['Regularly, roughly monthly','Occasionally','Rarely or never'] },
+    { id:'breastChanges', section:'breast', text:"Have you noticed any new lumps, changes in shape, skin changes, or nipple changes recently?", type:'single',
+      options:['No','Yes, and I\'ve had it checked','Yes, not checked yet'] },
+    { id:'breastScreening', section:'breast', text:"Have you had a breast screening (mammogram) if you're in the age range it's offered?", type:'single',
+      options:['Not yet in the age range','Yes, up to date','No, overdue','Not sure'] },
+
+    { id:'heartFamilyHistory', section:'heart', text:"Does your immediate family have a history of heart disease or stroke before age 60?", type:'single',
+      options:['Yes','No','Not sure'] },
+    { id:'bloodPressure', section:'heart', text:"Do you know your blood pressure, and is it in the normal range?", type:'single',
+      options:["Yes, and it's normal","Yes, and it's raised",'No, haven\'t checked recently','Not sure'] },
+    { id:'palpitations', section:'heart', text:"Have you noticed heart palpitations, unusual breathlessness, or chest discomfort recently?", type:'single',
+      options:['No','Occasionally','Regularly'] },
+    { id:'smoking', section:'heart', text:"Do you currently smoke?", type:'single',
+      options:['No, never','No, but used to','Yes'] },
+
+    { id:'generalMood', section:'mental_health', text:"Over the past few weeks, how would you describe your mood overall?", type:'single',
+      options:['Good, stable','Some low or anxious days','Low or anxious most days','Struggling significantly'],
+      showIf: function(a){ return MATERNAL_STAGES.indexOf(a.lifeStage) === -1; } },
+    { id:'adhdTraits', section:'mental_health', text:"Do any of these feel true for you, and have done for a long time (not just recently)?", type:'multi',
+      options:['Trouble focusing or finishing tasks','Losing things or forgetting appointments often','Feeling restless or needing to move','Interrupting or struggling to wait your turn','None of these'],
+      showIf: function(a){ return MATERNAL_STAGES.indexOf(a.lifeStage) === -1; } },
+    { id:'autismTraits', section:'mental_health', text:"Do any of these feel true for you?", type:'multi',
+      options:['Finding social situations draining or hard to read','Strong need for routine or discomfort with sudden change','Intense focus on specific interests','Sensory sensitivity (sound, light, texture)','None of these'],
+      showIf: function(a){ return MATERNAL_STAGES.indexOf(a.lifeStage) === -1; } },
+
+    { id:'sexualHealthCheck', section:'sexual_health', text:"When did you last have a sexual health check-up (STI screening), if relevant to you?", type:'single',
+      options:['Not applicable to me','Within the last year','More than a year ago','Never, and it might be relevant'] },
+    { id:'sexualHealthSymptoms', section:'sexual_health', text:"Have you noticed any of these recently?", type:'multi',
+      options:['Unusual discharge','Pain or discomfort during sex','Itching, soreness, or unusual odour','Unexplained bleeding between periods or after sex','None of these'] },
+    { id:'sexualWellbeing', section:'sexual_health', text:"How would you describe your satisfaction with your sex life right now, if this is relevant to you?", type:'single',
+      options:['Not applicable / prefer not to say','Satisfied','Some concerns','Significant concerns, e.g. pain or low desire affecting you'] },
+
+    { id:'brainFamilyHistory', section:'brain', text:"Does your immediate family have a history of dementia or Alzheimer's disease?", type:'single',
+      options:['Yes','No','Not sure'] },
+    { id:'brainLifestyle', section:'brain', text:"Which of these are part of your regular routine?", type:'multi',
+      options:['Regular physical activity','Activities that challenge your brain (learning, puzzles, reading)','Good quality sleep most nights','Regular social contact','None of these currently'] },
+
+    { id:'anaemiaSymptoms', section:'blood_energy', text:"Have you noticed any of these recently?", type:'multi',
+      options:['Pale skin, lips, or inside of eyelids','Shortness of breath with normal activity','Dizziness or lightheadedness','Unusual cravings for ice or non-food items','Brittle nails or hair loss','None of these'] },
+
+    { id:'pregnancyOptionsInterest', section:'pregnancy_choices', text:"Would information about your options around pregnancy, including abortion care, be helpful to you right now?", type:'single',
+      options:['Not relevant to me right now','I already know my options and don\'t need more information','I\'d find general information helpful','I\'d like details on accessing support now'],
+      showIf: function(a){ return PREGNANCY_CHOICE_STAGES.indexOf(a.lifeStage) > -1; } }
   ];
 
   function visibleQuestions(){
@@ -522,7 +594,12 @@
     var qs = visibleQuestions();
     var q = qs[currentIndex];
     var mount = document.getElementById('question-mount');
-    var sectionLabel = { gate:'Getting started', core:'General', menopause:'Menopause and hormones', maternal:'Motherhood', strength:'Bone, brain and strength' }[q.section];
+    var sectionLabel = {
+      gate:'Getting started', core:'General', menopause:'Menopause and hormones', maternal:'Motherhood',
+      strength:'Bone, brain and strength', periods:'Periods and contraception', pelvic:'Pelvic and bladder health',
+      breast:'Breast health', heart:'Heart health', mental_health:'Mental health', sexual_health:'Sexual health',
+      brain:'Memory and brain health', blood_energy:'Blood and energy', pregnancy_choices:'Pregnancy options'
+    }[q.section];
 
     var html = '<div class="q-eyebrow">' + sectionLabel + '</div>';
     html += '<div class="q-text">' + q.text + '</div>';
@@ -621,6 +698,72 @@
     var boneMap = {'Neither':2,'One of these':1,'Both':0,'Not sure':1};
     return bandLabel((strengthMap[answers.strength]||0) + (fallsMap[answers.falls]||0) + (wbMap[answers.weightBearing]||0) + (boneMap[answers.boneCheck]||0), [1, 4]);
   }
+  function countChecked(list, excludeVal){
+    return (list || []).filter(function(v){ return v !== excludeVal; }).length;
+  }
+  function scorePeriods(){
+    var painMap = {'No periods currently':0,'Mild or manageable':0,'Moderate, affects some days':1,'Severe, affects daily life':3};
+    var flowMap = {'No periods currently':0,'Light':0,'Moderate':1,'Heavy, needs frequent changes or overnight protection':2};
+    var pmsMap = {'Not at all':0,'A little':1,'Moderately':2,'Significantly':3};
+    return bandLabel((painMap[answers.periodPain]||0) + (flowMap[answers.periodFlow]||0) + (pmsMap[answers.pmsImpact]||0), [1, 4]);
+  }
+  function scorePelvic(){
+    var leakMap = {'Never':0,'Occasionally':1,'Regularly':2,'Most days':3};
+    var floorMap = {'Regularly':0,'Occasionally':0,'Never':1,'Not sure how to':1};
+    var utiMap = {'Never or rarely':0,'Occasionally, a few times a year':1,'Frequently, most months':2};
+    var symptoms = countChecked(answers.pelvicSymptoms, 'None of these');
+    return bandLabel((leakMap[answers.bladderLeaks]||0) + (floorMap[answers.pelvicFloorExercise]||0) + (utiMap[answers.utiFrequency]||0) + symptoms, [2, 6]);
+  }
+  function scoreBreast(){
+    var changesMap = {'No':0,'Yes, and I\'ve had it checked':0,'Yes, not checked yet':3};
+    var screeningMap = {'Not yet in the age range':0,'Yes, up to date':0,'No, overdue':2,'Not sure':1};
+    var checksMap = {'Regularly, roughly monthly':0,'Occasionally':0,'Rarely or never':1};
+    return bandLabel((changesMap[answers.breastChanges]||0) + (screeningMap[answers.breastScreening]||0) + (checksMap[answers.breastChecks]||0), [1, 3]);
+  }
+  function scoreHeart(){
+    var familyMap = {'Yes':1,'No':0,'Not sure':1};
+    var bpMap = {"Yes, and it's normal":0,"Yes, and it's raised":2,'No, haven\'t checked recently':1,'Not sure':1};
+    var palpMap = {'No':0,'Occasionally':1,'Regularly':3};
+    var smokingMap = {'No, never':0,'No, but used to':1,'Yes':2};
+    return bandLabel((familyMap[answers.heartFamilyHistory]||0) + (bpMap[answers.bloodPressure]||0) + (palpMap[answers.palpitations]||0) + (smokingMap[answers.smoking]||0), [1, 4]);
+  }
+  function scoreMentalHealth(){
+    var moodMap = {'Good, stable':0,'Some low or anxious days':1,'Low or anxious most days':2,'Struggling significantly':3};
+    var adhd = countChecked(answers.adhdTraits, 'None of these');
+    var autism = countChecked(answers.autismTraits, 'None of these');
+    return bandLabel((moodMap[answers.generalMood]||0) + adhd + autism, [1, 5]);
+  }
+  function scoreSexualHealth(){
+    var checkupMap = {'Not applicable to me':0,'Within the last year':0,'More than a year ago':1,'Never, and it might be relevant':2};
+    var wellbeingMap = {'Not applicable / prefer not to say':0,'Satisfied':0,'Some concerns':1,'Significant concerns, e.g. pain or low desire affecting you':2};
+    var symptoms = countChecked(answers.sexualHealthSymptoms, 'None of these');
+    return bandLabel((checkupMap[answers.sexualHealthCheck]||0) + (wellbeingMap[answers.sexualWellbeing]||0) + symptoms, [1, 4]);
+  }
+  function scoreBrain(){
+    var memoryMap = {'No change':0,'Slight change':1,'Noticeable change':2,'Significant change':3};
+    var familyMap = {'Yes':2,'No':0,'Not sure':1};
+    var lifestyle = answers.brainLifestyle || [];
+    var score = (memoryMap[answers.memory]||0) + (familyMap[answers.brainFamilyHistory]||0);
+    if(lifestyle.indexOf('None of these currently') > -1 || lifestyle.length === 0){ score += 1; }
+    else { score = Math.max(0, score - Math.min(countChecked(lifestyle, 'None of these currently'), 2)); }
+    return bandLabel(score, [1, 4]);
+  }
+  function scoreBloodEnergy(){
+    var energyMap = {'Low most days':3,'Variable':1,'Generally good':0,'Consistently high':0};
+    var symptoms = countChecked(answers.anaemiaSymptoms, 'None of these');
+    var score = (energyMap[answers.energy]||0) + symptoms;
+    if(answers.periodFlow === 'Heavy, needs frequent changes or overnight protection'){ score += 2; }
+    return bandLabel(score, [1, 4]);
+  }
+  function scorePregnancyChoices(){
+    var directMap = {
+      'Not relevant to me right now':'low',
+      'I already know my options and don\'t need more information':'low',
+      'I\'d find general information helpful':'mid',
+      'I\'d like details on accessing support now':'high'
+    };
+    return directMap[answers.pregnancyOptionsInterest] || 'low';
+  }
 
   var bandCopy = {
     menopause: {
@@ -646,10 +789,42 @@
             next:['Add weight-bearing activity a couple of times a week','Ask about a bone density scan if you haven\'t had one']},
       high:{label:'Worth prioritising', text:"Several factors here suggest your bone health and physical resilience deserve real attention now.",
             next:['Book a consultation to discuss a bone density scan','Start a structured strength routine, ideally with guidance']}
+    },
+    periods: {
+      low:{label:'Nothing concerning'}, mid:{label:'Worth a conversation'}, high:{label:'Worth prioritising'}
+    },
+    pelvic: {
+      low:{label:'No current concerns'}, mid:{label:'Some factors to watch'}, high:{label:'Worth prioritising'}
+    },
+    breast: {
+      low:{label:'No current concerns'}, mid:{label:'Worth a closer look'}, high:{label:'Get this checked now'}
+    },
+    heart: {
+      low:{label:'Steady'}, mid:{label:'Worth a check-in'}, high:{label:'Worth prioritising'}
+    },
+    mental_health: {
+      low:{label:'Doing okay'}, mid:{label:'Worth exploring further'}, high:{label:'Worth prioritising'}
+    },
+    sexual_health: {
+      low:{label:'No current concerns'}, mid:{label:'Worth a check-up'}, high:{label:'Get this checked soon'}
+    },
+    brain: {
+      low:{label:'No current concerns'}, mid:{label:'Worth watching'}, high:{label:'Worth a proper check'}
+    },
+    blood_energy: {
+      low:{label:'No current concerns'}, mid:{label:'Worth checking'}, high:{label:'Worth prioritising'}
+    },
+    pregnancy_choices: {
+      low:{label:'Not needed right now'}, mid:{label:'General information'}, high:{label:'Support available now'}
     }
   };
 
-  var specialistMap = { menopause:'Recommended: Menopause specialist', maternal:'Recommended: GP or health visitor', strength:'Recommended: Practitioner or strength coach' };
+  var specialistMap = {
+    menopause:'Recommended: Menopause specialist', maternal:'Recommended: GP or health visitor', strength:'Recommended: Practitioner or strength coach',
+    periods:'Recommended: GP', pelvic:'Recommended: Pelvic health physiotherapist', breast:'Recommended: GP or breast clinic',
+    heart:'Recommended: GP', mental_health:'Recommended: GP', sexual_health:'Recommended: Sexual health clinic or GP',
+    brain:'Recommended: GP', blood_energy:'Recommended: GP', pregnancy_choices:'Recommended: GP, BPAS, or MSI Reproductive Choices'
+  };
 
   var affiliateBank = [
     {tag:'Sleep', name:'Magnesium glycinate, evening blend'},
@@ -669,8 +844,10 @@
     var tracksMount = document.getElementById('tracks-mount');
     var html = '';
 
-    var isMenopauseStage = ['Perimenopause','Menopause','Postmenopause'].indexOf(answers.lifeStage) > -1;
-    var isMaternalStage = ['Pregnant','Postnatal (within 2 years)'].indexOf(answers.lifeStage) > -1;
+    var isMenopauseStage = MENOPAUSE_STAGES.indexOf(answers.lifeStage) > -1;
+    var isMaternalStage = MATERNAL_STAGES.indexOf(answers.lifeStage) > -1;
+    var isPeriodsStage = PERIODS_STAGES.indexOf(answers.lifeStage) > -1;
+    var isPregnancyChoiceStage = PREGNANCY_CHOICE_STAGES.indexOf(answers.lifeStage) > -1;
 
     // Teaser only: band label, no detail, no next steps. Full version arrives by email once reviewed.
     if(isMenopauseStage){
@@ -679,7 +856,22 @@
     if(isMaternalStage){
       html += trackHTML('', 'Maternal Wellbeing', scoreMaternal(), bandCopy.maternal[scoreMaternal()]);
     }
+    if(isPeriodsStage){
+      html += trackHTML('', 'Periods and Contraception', scorePeriods(), bandCopy.periods[scorePeriods()]);
+    }
     html += trackHTML('gold', 'Bone, Brain and Strength', scoreStrength(), bandCopy.strength[scoreStrength()]);
+    html += trackHTML('', 'Pelvic, Bladder and Reproductive Health', scorePelvic(), bandCopy.pelvic[scorePelvic()]);
+    html += trackHTML('magenta', 'Breast Health and Screening', scoreBreast(), bandCopy.breast[scoreBreast()]);
+    html += trackHTML('gold', 'Heart Health', scoreHeart(), bandCopy.heart[scoreHeart()]);
+    if(!isMaternalStage){
+      html += trackHTML('', 'Mental Health and Neurodivergence', scoreMentalHealth(), bandCopy.mental_health[scoreMentalHealth()]);
+    }
+    html += trackHTML('magenta', 'Sexual Health', scoreSexualHealth(), bandCopy.sexual_health[scoreSexualHealth()]);
+    html += trackHTML('gold', 'Memory and Brain Health', scoreBrain(), bandCopy.brain[scoreBrain()]);
+    html += trackHTML('', 'Blood and Energy Health', scoreBloodEnergy(), bandCopy.blood_energy[scoreBloodEnergy()]);
+    if(isPregnancyChoiceStage){
+      html += trackHTML('magenta', 'Pregnancy Options and Support', scorePregnancyChoices(), bandCopy.pregnancy_choices[scorePregnancyChoices()]);
+    }
 
     tracksMount.innerHTML = html;
 

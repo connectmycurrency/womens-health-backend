@@ -355,6 +355,7 @@ def _render(user_name, life_stage, report, reviewed, reviewed_by, page_label_map
         [Paragraph("NHS 111", box_title), Paragraph("For urgent, non-emergency support any time, day or night.", box_body)],
         [Paragraph("British Menopause Society", box_title), Paragraph("Independent, evidence-based information specifically on menopause.", box_body)],
         [Paragraph("Local health visiting service", box_title), Paragraph("Ongoing postnatal support, usually contactable directly without needing a GP appointment first.", box_body)],
+        [Paragraph("National Domestic Abuse Helpline", box_title), Paragraph("Freephone, confidential, 24 hours a day: 0808 2000 247. Run by Refuge, for anyone worried about their own safety or someone else's.", box_body)],
     ]
     story.append(_boxed_table(resource_rows, [50 * mm, None]))
     story.append(Spacer(1, 16))

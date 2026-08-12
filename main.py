@@ -179,6 +179,21 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)):
 
 # ---------- The logged-in person's own report ----------
 
+def _effective_report(lead: Lead) -> dict:
+    """Reports are computed once at signup and frozen into lead.report so
+    a practitioner's edits survive. But before a practitioner has reviewed
+    a lead, nothing has been intentionally edited yet, so serving the
+    frozen snapshot means content/scoring updates in scoring.py never
+    reach accounts that signed up before the update, even after a
+    redesign ships. Recompute from the stored answers on every read until
+    the lead is reviewed; once reviewed, the stored value (possibly
+    hand-edited by a practitioner) is authoritative and must not be
+    overwritten."""
+    if lead.status == "reviewed":
+        return lead.report
+    return build_report(lead.life_stage, lead.answers)
+
+
 @app.get("/api/me/report", response_model=MeReportOut)
 def get_my_report(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     if not user.lead_id:
@@ -188,7 +203,7 @@ def get_my_report(user: User = Depends(get_current_user), db: Session = Depends(
         return MeReportOut(has_report=False)
     return MeReportOut(
         life_stage=lead.life_stage,
-        report=lead.report,
+        report=_effective_report(lead),
         status=lead.status,
         reviewed_by=lead.reviewed_by,
         has_report=True,
@@ -206,7 +221,7 @@ def download_my_report_pdf(user: User = Depends(get_current_user), db: Session =
     pdf_bytes = build_report_pdf(
         user_name=user.name,
         life_stage=lead.life_stage,
-        report=lead.report,
+        report=_effective_report(lead),
         reviewed=(lead.status == "reviewed"),
         reviewed_by=lead.reviewed_by,
     )
