@@ -2,14 +2,14 @@ import os
 from datetime import datetime
 from typing import Optional, List
 
-from fastapi import FastAPI, Depends, HTTPException, Header
+from fastapi import FastAPI, Depends, HTTPException, Header, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import Response
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 
-from database import Base, engine, get_db
+from database import Base, engine, get_db, SessionLocal
 from models import Lead, User
 from schemas import (
     LeadCreate, LeadOut, LeadReviewUpdate,
@@ -66,8 +66,28 @@ def health_check():
 
 # ---------- Lead submission (called by the quiz) ----------
 
+def _send_lead_email_background(lead_id: str):
+    """Runs after the response has already gone back to the client. Opens
+    its own DB session since the request's session is closed by then.
+    Sending via Resend was previously done inline before responding, which
+    added several seconds (sometimes much more, on top of Render free-tier
+    cold starts) to every quiz submission. Moving it here means the client
+    gets its response as soon as the lead is saved, not after the email
+    round-trip finishes too."""
+    db = SessionLocal()
+    try:
+        lead = db.query(Lead).filter(Lead.id == lead_id).first()
+        if not lead:
+            return
+        send_report_ready_email(lead)
+        lead.sent_at = datetime.utcnow()
+        db.commit()
+    finally:
+        db.close()
+
+
 @app.post("/api/leads", response_model=LeadOut)
-def create_lead(payload: LeadCreate, db: Session = Depends(get_db)):
+def create_lead(payload: LeadCreate, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
     report = build_report(payload.life_stage, payload.answers)
 
     lead = Lead(
@@ -85,11 +105,9 @@ def create_lead(payload: LeadCreate, db: Session = Depends(get_db)):
     db.refresh(lead)
 
     # Email is teaser + a link to the signup/portal page, never the full
-    # report content itself, so nothing detailed leaves via email.
-    send_report_ready_email(lead)
-    lead.sent_at = datetime.utcnow()
-    db.commit()
-    db.refresh(lead)
+    # report content itself, so nothing detailed leaves via email. Sent in
+    # the background so the quiz doesn't sit waiting on it.
+    background_tasks.add_task(_send_lead_email_background, lead.id)
 
     return lead
 

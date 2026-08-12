@@ -40,95 +40,130 @@
   @media (max-width:640px){ section{padding:40px 0;} }
   .center{text-align:center;}
 
-  header{background:var(--purple-dark); padding:16px 0;}
-  .brand{display:flex; align-items:center; justify-content:center; gap:10px;}
+  header{
+    background:rgba(46,8,84,0.88); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    padding:14px 0; position:sticky; top:0; z-index:50; border-bottom:1px solid rgba(255,255,255,0.08);
+  }
+  .navwrap{max-width:1080px; margin:0 auto; padding:0 24px; display:flex; align-items:center; justify-content:space-between; gap:16px;}
+  .brand{display:flex; align-items:center; gap:10px;}
   .brand-badge{
-    background:var(--white); color:var(--purple-dark); font-weight:800; font-size:0.95rem;
+    background:linear-gradient(135deg,var(--gold),#E8C863); color:var(--purple-dark); font-weight:800; font-size:0.95rem;
     padding:5px 12px; border-radius:100px; letter-spacing:0.02em;
   }
   .brand-name{color:var(--white); font-weight:600; font-size:0.95rem;}
+  .navlinks{display:flex; align-items:center; gap:26px;}
+  @media (max-width:760px){ .navlinks{display:none;} }
+  .navlinks a{color:#E0C9F5; text-decoration:none; font-size:0.9rem; font-weight:600; transition:color 0.15s ease;}
+  .navlinks a:hover{color:var(--white);}
+  .nav-cta{
+    background:var(--gold); color:var(--purple-dark); border:none; padding:10px 20px; border-radius:100px;
+    font-weight:700; font-size:0.88rem; cursor:pointer; transition:background 0.15s ease, transform 0.1s ease;
+  }
+  .nav-cta:hover{background:#DBB53A; transform:translateY(-1px);}
 
   /* hero */
-  #landing{padding:0; background:var(--purple-dark);}
-  .hero-band{background:var(--purple-dark); color:var(--white);}
-  .hero{padding:64px 0 56px 0; text-align:center; max-width:640px; margin:0 auto;}
+  #landing{padding:0; background:radial-gradient(circle at 20% 15%, #4A1A82 0%, var(--purple-dark) 45%, #1D0538 100%); position:relative; overflow:hidden;}
+  #landing::before{
+    content:''; position:absolute; inset:0;
+    background:radial-gradient(circle at 82% 25%, rgba(201,162,39,0.22) 0%, transparent 45%),
+               radial-gradient(circle at 12% 85%, rgba(194,54,123,0.22) 0%, transparent 40%);
+    pointer-events:none;
+  }
+  .hero-band{color:var(--white); position:relative; z-index:1;}
+  .hero{padding:76px 0 64px 0; text-align:center; max-width:660px; margin:0 auto;}
   .eyebrow-light{
     text-transform:uppercase; font-size:0.78rem; font-weight:700; letter-spacing:0.08em; color:#D9B8F5;
   }
-  .hero h1{color:var(--white); font-size:clamp(2rem, 5vw, 2.9rem); margin-top:0.5em;}
-  .hero p.lede{font-size:1.1rem; color:#E6D4F5; max-width:44ch; margin:0.9em auto 0 auto;}
+  .hero h1{color:var(--white); font-size:clamp(2.1rem, 5vw, 3.1rem); margin-top:0.5em; letter-spacing:-0.02em;}
+  .hero p.lede{font-size:1.12rem; color:#E6D4F5; max-width:48ch; margin:0.9em auto 0 auto;}
   .badges{display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-top:1.5em;}
   .badge{
     display:inline-flex; align-items:center; gap:6px;
-    background:rgba(255,255,255,0.14); color:var(--white); font-size:0.82rem; font-weight:600;
-    padding:6px 13px; border-radius:100px;
+    background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.16); backdrop-filter:blur(6px);
+    color:var(--white); font-size:0.82rem; font-weight:600; padding:6px 13px; border-radius:100px;
   }
   .cta{
     display:inline-flex; align-items:center; gap:8px;
-    background:var(--gold); color:var(--purple-dark); border:none;
-    padding:16px 28px; border-radius:100px; font-weight:700; font-size:1.02rem;
-    cursor:pointer; margin-top:1.8em;
-    transition:background 0.15s ease, transform 0.1s ease;
+    background:linear-gradient(135deg,var(--gold),#E8C863); color:var(--purple-dark); border:none;
+    padding:17px 30px; border-radius:100px; font-weight:700; font-size:1.03rem;
+    cursor:pointer; margin-top:1.9em; box-shadow:0 10px 30px -8px rgba(201,162,39,0.55);
+    transition:transform 0.15s ease, box-shadow 0.15s ease;
   }
-  .cta:hover{background:#DBB53A;}
-  .cta:active{transform:translateY(1px);}
+  .cta:hover{transform:translateY(-2px); box-shadow:0 14px 34px -6px rgba(201,162,39,0.65);}
+  .cta:active{transform:translateY(0px);}
   .cta:focus-visible{outline:3px solid var(--white); outline-offset:2px;}
   .cta-sub{display:block; font-size:0.82rem; color:#D9B8F5; margin-top:0.9em;}
 
-  /* who it's for: avatar mosaic */
-  #for-you{background:var(--bg);}
-  .section-title{font-size:1.7rem; margin-top:0.3em;}
+  .section-title{font-size:1.8rem; margin-top:0.3em; letter-spacing:-0.01em;}
+  .section-sub{color:var(--ink-soft); font-size:1rem; max-width:56ch; margin:0.6em auto 0 auto;}
   .eyebrow{
     text-transform:uppercase; font-size:0.78rem; font-weight:700; letter-spacing:0.06em; color:var(--purple);
   }
-  .avatars{display:flex; justify-content:center; align-items:flex-end; gap:22px; margin:44px 0 40px 0; flex-wrap:wrap;}
-  .avatar{
-    width:112px; height:112px; border-radius:50%; display:flex; align-items:center; justify-content:center;
-    flex:none;
+
+  /* social proof strip, right under hero */
+  #proof-1{background:var(--white); border-bottom:1px solid var(--border); padding:34px 0;}
+  .proof-strip{display:flex; flex-wrap:wrap; justify-content:center; gap:34px; text-align:center;}
+  .proof-stat{display:flex; flex-direction:column; gap:2px;}
+  .proof-stat strong{font-family:'Fraunces',serif; font-size:1.5rem; color:var(--purple-dark);}
+  .proof-stat span{font-size:0.82rem; color:var(--ink-soft); font-weight:600;}
+
+  /* what your report can cover (best-sellers equivalent) */
+  #covers{background:var(--bg);}
+  .covers-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-top:40px;}
+  @media (max-width:900px){ .covers-grid{grid-template-columns:repeat(3,1fr);} }
+  @media (max-width:640px){ .covers-grid{grid-template-columns:repeat(2,1fr);} }
+  .cover-card{
+    background:var(--white); border:1px solid var(--border); border-radius:14px; padding:20px 16px;
+    text-align:center; transition:transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
   }
-  .avatar.a1{background:var(--magenta-pale);}
-  .avatar.a2{background:var(--purple-pale); width:132px; height:132px;}
-  .avatar.a3{background:var(--gold-pale);}
-  .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:8px;}
-  @media (max-width:760px){ .cards{grid-template-columns:1fr;} }
+  .cover-card:hover{transform:translateY(-3px); box-shadow:0 14px 28px -14px rgba(46,8,84,0.28); border-color:var(--purple);}
+  .cover-icon{
+    width:44px; height:44px; border-radius:12px; background:var(--purple-pale); color:var(--purple);
+    display:flex; align-items:center; justify-content:center; margin:0 auto 10px auto;
+  }
+  .cover-card span{font-weight:700; font-size:0.85rem; color:var(--ink);}
+  .covers-note{max-width:56ch; margin:32px auto 0 auto; color:var(--ink-soft); font-size:0.92rem; text-align:center;}
+
+  /* life stages (categories equivalent) */
+  #stages{background:var(--white); border-top:1px solid var(--border); border-bottom:1px solid var(--border);}
+  .cards{display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-top:40px;}
+  @media (max-width:900px){ .cards{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:520px){ .cards{grid-template-columns:1fr;} }
   .card{
-    background:var(--white); border:1px solid var(--border); border-radius:var(--radius);
-    padding:26px; text-align:center;
+    background:linear-gradient(180deg,var(--bg),var(--white)); border:1px solid var(--border); border-radius:var(--radius);
+    padding:26px; text-align:center; transition:transform 0.15s ease, box-shadow 0.15s ease;
   }
-  .card h3{font-size:1.12rem; margin-bottom:0.3em;}
-  .card p{color:var(--ink-soft); font-size:0.95rem;}
-
-  /* what we'll ask about: icon grid on colour band */
-  #ask{background:var(--purple-dark); color:var(--white);}
-  #ask .section-title{color:var(--white);}
-  .icon-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:32px; margin-top:40px; text-align:center;}
-  @media (max-width:640px){ .icon-grid{grid-template-columns:repeat(2,1fr);} }
-  .icon-grid .item{display:flex; flex-direction:column; align-items:center; gap:10px;}
-  .icon-badge{
-    width:64px; height:64px; border-radius:50%; background:rgba(255,255,255,0.12);
-    display:flex; align-items:center; justify-content:center;
+  .card:hover{transform:translateY(-3px); box-shadow:0 16px 30px -16px rgba(46,8,84,0.25);}
+  .card-icon{
+    width:52px; height:52px; border-radius:50%; margin:0 auto 14px auto; display:flex; align-items:center; justify-content:center;
   }
-  .icon-grid .item span{font-weight:700; font-size:0.92rem;}
-  #ask .note{max-width:56ch; margin:40px auto 0 auto; color:#E0C9F5; font-size:0.95rem; text-align:center;}
+  .card h3{font-size:1.05rem; margin-bottom:0.3em;}
+  .card p{color:var(--ink-soft); font-size:0.9rem;}
 
-  /* how it works */
-  #how{background:var(--bg);}
-  .steps{display:grid; grid-template-columns:repeat(3,1fr); gap:26px; margin-top:40px;}
-  @media (max-width:760px){ .steps{grid-template-columns:1fr;} }
-  .step{text-align:center;}
-  .step-icon{
-    width:52px; height:52px; border-radius:50%; background:var(--purple-pale); color:var(--purple);
-    display:flex; align-items:center; justify-content:center; margin:0 auto 14px auto; font-weight:800; font-family:'Fraunces',serif;
+  /* social proof 2: how we keep this trustworthy */
+  #proof-2{background:var(--purple-dark); color:var(--white); position:relative; overflow:hidden;}
+  #proof-2::before{
+    content:''; position:absolute; inset:0;
+    background:radial-gradient(circle at 85% 20%, rgba(201,162,39,0.18) 0%, transparent 45%);
+    pointer-events:none;
   }
-  .step h3{font-size:1.05rem; margin-bottom:0.25em;}
-  .step p{color:var(--ink-soft); font-size:0.92rem;}
+  #proof-2 .wrap{position:relative; z-index:1;}
+  #proof-2 .section-title{color:var(--white);}
+  #proof-2 .section-sub{color:#E0C9F5;}
+  .trust-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:40px;}
+  @media (max-width:760px){ .trust-grid{grid-template-columns:1fr;} }
+  .trust-item{
+    background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:14px; padding:22px;
+  }
+  .trust-item h3{color:var(--white); font-size:1rem; margin-bottom:0.4em;}
+  .trust-item p{color:#D9C4EE; font-size:0.9rem;}
 
-  /* what you get */
-  #get{background:var(--white); border-top:1px solid var(--border); border-bottom:1px solid var(--border);}
-  ul.getlist{list-style:none; margin:32px auto 0 auto; padding:0; display:grid; gap:14px; max-width:520px;}
+  /* benefits (what you get / why choose us) */
+  #benefits{background:var(--bg);}
+  ul.getlist{list-style:none; margin:32px auto 0 auto; padding:0; display:grid; gap:14px; max-width:560px;}
   ul.getlist li{display:flex; gap:12px; align-items:flex-start; color:var(--ink-soft); text-align:left;}
   .tick{
-    width:22px; height:22px; border-radius:50%; background:var(--purple); flex:none;
+    width:22px; height:22px; border-radius:50%; background:linear-gradient(135deg,var(--purple),#9548E8); flex:none;
     display:flex; align-items:center; justify-content:center; margin-top:2px;
   }
   .reassure{
@@ -137,17 +172,66 @@
   }
   .reassure p{color:var(--ink); font-size:0.95rem;}
 
+  /* social proof 3: community */
+  #proof-3{background:linear-gradient(135deg,var(--magenta-pale),var(--gold-pale)); padding:52px 0;}
+  .community-band{
+    display:flex; align-items:center; gap:24px; justify-content:center; text-align:left; flex-wrap:wrap;
+    background:var(--white); border-radius:var(--radius); padding:30px 32px; max-width:720px; margin:0 auto;
+    box-shadow:0 20px 40px -20px rgba(46,8,84,0.2);
+  }
+  .community-icon{
+    width:56px; height:56px; border-radius:50%; background:var(--purple-pale); color:var(--purple); flex:none;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .community-band h3{font-size:1.15rem; margin-bottom:0.2em;}
+  .community-band p{color:var(--ink-soft); font-size:0.92rem; max-width:42ch;}
+
+  /* about */
+  #about{background:var(--white);}
+  #about .wrap{max-width:680px; text-align:center;}
+  #about p{color:var(--ink-soft); font-size:1rem; margin-top:1em; line-height:1.7;}
+
+  /* faq */
+  #faq{background:var(--bg);}
+  #faq .wrap{max-width:720px;}
+  .faq-list{margin-top:36px; display:grid; gap:12px;}
+  .faq-item{
+    background:var(--white); border:1px solid var(--border); border-radius:12px; padding:4px 20px;
+  }
+  .faq-item summary{
+    padding:16px 0; cursor:pointer; font-weight:700; color:var(--purple-dark); list-style:none;
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary::after{content:'+'; font-size:1.3rem; color:var(--purple); font-weight:700; flex:none;}
+  .faq-item[open] summary::after{content:'\2212';}
+  .faq-item p{color:var(--ink-soft); font-size:0.92rem; padding-bottom:18px; line-height:1.6;}
+
+  /* final cta band */
+  #final-cta{background:var(--purple-dark); position:relative; overflow:hidden;}
+  #final-cta::before{
+    content:''; position:absolute; inset:0;
+    background:radial-gradient(circle at 15% 30%, rgba(194,54,123,0.22) 0%, transparent 45%),
+               radial-gradient(circle at 88% 75%, rgba(201,162,39,0.2) 0%, transparent 40%);
+  }
+  #final-cta .wrap{position:relative; z-index:1; text-align:center;}
+  #final-cta h2{color:var(--white); font-size:2rem;}
+  #final-cta p{color:#E0C9F5; max-width:46ch; margin:0.6em auto 0 auto;}
+
   footer{background:var(--bg); border-top:1px solid var(--border); padding:32px 0;}
   footer p{font-size:0.82rem; color:var(--ink-soft); max-width:70ch; margin:0 auto; text-align:center;}
 
   /* ---------- QUIZ ---------- */
   #quiz{background:var(--white) !important; min-height:100vh; padding-top:40px;}
-  #quiz .wrap{max-width:600px;}
-  .progress-label{font-size:0.85rem; font-weight:600; color:var(--ink-soft); margin-bottom:8px;}
-  .progress-track{ height:8px; background:var(--purple-pale); border-radius:100px; overflow:hidden; margin-bottom:36px; }
-  .progress-fill{height:100%; background:var(--purple); width:0%; transition:width 0.3s ease; border-radius:100px;}
+  #quiz .wrap{max-width:640px;}
+  .q-page-head{margin-bottom:20px; padding-bottom:24px; border-bottom:1px solid var(--border);}
+  .q-page-title{font-size:1.9rem; margin:0.3em 0 0.2em 0;}
+  .q-page-sub{color:var(--ink-soft); font-size:0.95rem; max-width:52ch;}
+  .qblock{padding:26px 0; border-bottom:1px solid var(--border); transition:box-shadow 0.3s ease, background 0.3s ease; border-radius:10px;}
+  .qblock:first-of-type{padding-top:6px;}
+  .qblock.qblock-missing{background:var(--magenta-pale); box-shadow:0 0 0 2px var(--magenta); padding-left:14px; padding-right:14px;}
   .q-eyebrow{font-size:0.78rem; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; color:var(--magenta);}
-  .q-text{font-family:'Fraunces', serif; font-size:1.5rem; font-weight:600; color:var(--purple-dark); margin:0.5em 0 1.2em 0; line-height:1.3;}
+  .q-text{font-family:'Fraunces', serif; font-size:1.3rem; font-weight:600; color:var(--purple-dark); margin:0.5em 0 1em 0; line-height:1.3;}
   .options{display:grid; gap:10px;}
   .opt{
     text-align:left; padding:15px 18px; border:2px solid var(--border); border-radius:12px;
@@ -157,17 +241,14 @@
   .opt:hover{border-color:var(--purple);}
   .opt.selected{border-color:var(--purple); background:var(--purple-pale); color:var(--purple-dark); font-weight:700;}
   .opt:focus-visible{outline:3px solid var(--gold); outline-offset:1px;}
-  .quiz-nav{display:flex; justify-content:space-between; align-items:center; margin-top:30px; padding-bottom:40px;}
-  .btn-ghost{
-    background:none; border:none; color:var(--purple); font-size:0.95rem; font-weight:600;
-    cursor:pointer; text-decoration:underline; padding:8px 0;
-  }
+  .quiz-submit-row{display:flex; justify-content:center; margin-top:36px; padding-bottom:56px;}
   .btn-primary{
-    background:var(--purple); color:var(--white); border:none; padding:14px 26px;
-    border-radius:100px; font-weight:700; cursor:pointer; font-size:0.98rem;
-    opacity:0.35; pointer-events:none; transition:opacity 0.15s ease;
+    background:var(--purple); color:var(--white); border:none; padding:16px 34px;
+    border-radius:100px; font-weight:700; cursor:pointer; font-size:1.02rem;
+    transition:opacity 0.15s ease, background 0.15s ease;
   }
-  .btn-primary.ready{opacity:1; pointer-events:auto;}
+  .btn-primary:hover{background:var(--purple-dark);}
+  .btn-primary.ready{opacity:1;}
 
   /* ---------- REPORT ---------- */
   #report{background:var(--bg) !important;}
@@ -194,8 +275,10 @@
   .track ul.next li{margin-bottom:5px;}
   .specialist{font-size:0.85rem; font-weight:700; color:var(--purple-dark);}
 
-  /* teaser tracks show only the band, no detail, before email capture */
-  .track.teaser p.desc, .track.teaser ul.next, .track.teaser .specialist{display:none;}
+  /* Full summary and next steps are shown immediately, before email
+     capture, the email/PDF is for the deeper practitioner-reviewed
+     version (why it matters, lifestyle tips, when to seek help, specialist
+     recommendation), not for unlocking the basics. */
 
   .email-card{
     background:var(--white); border:1px solid var(--border); border-radius:var(--radius);
@@ -249,9 +332,17 @@
 <body style="background:#FAF8FC;">
 
 <header>
-  <div class="wrap brand">
-    <span class="brand-badge">TFP</span>
-    <span class="brand-name">The Full Picture</span>
+  <div class="navwrap">
+    <div class="brand">
+      <span class="brand-badge">TFP</span>
+      <span class="brand-name">The Full Picture</span>
+    </div>
+    <nav class="navlinks">
+      <a href="#covers">What we cover</a>
+      <a href="#stages">Life stages</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <button class="nav-cta" id="nav-start-btn">Start the free check</button>
   </div>
 </header>
 
@@ -260,10 +351,10 @@
   <div class="hero-band">
     <div class="wrap hero">
       <span class="eyebrow-light">Free women's health check</span>
-      <h1>Understand your hormones, mind and body at every stage.</h1>
-      <p class="lede">A free, personalised health check covering menopause, motherhood and long-term strength. Reviewed by a qualified practitioner before it reaches you.</p>
+      <h1>The full picture of your hormones, mind and body, whatever stage you're at.</h1>
+      <p class="lede">A free, personalised health check spanning menopause, motherhood, fertility, and everyday things like periods, heart health, mental health and more. You choose which topics your report covers.</p>
       <div class="badges">
-        <span class="badge">Takes 3 minutes</span>
+        <span class="badge">Free to take</span>
         <span class="badge">Reviewed by a practitioner</span>
         <span class="badge">Not a diagnosis</span>
       </div>
@@ -274,104 +365,186 @@
   </div>
 </section>
 
-<section id="for-you">
+<!-- ============ SOCIAL PROOF 1: trust strip ============ -->
+<section id="proof-1">
+  <div class="wrap">
+    <div class="proof-strip">
+      <div class="proof-stat"><strong>13</strong><span>Health areas covered</span></div>
+      <div class="proof-stat"><strong>100%</strong><span>Practitioner reviewed</span></div>
+      <div class="proof-stat"><strong>&pound;0</strong><span>Free to take</span></div>
+      <div class="proof-stat"><strong>You</strong><span>Choose what's covered</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHAT YOUR REPORT CAN COVER ============ -->
+<section id="covers">
+  <div class="wrap">
+    <div class="section-head center">
+      <span class="eyebrow">What your report can cover</span>
+      <h2 class="section-title">Pick what's relevant to you, we'll only ask about that.</h2>
+      <p class="section-sub">After your life stage, you choose which of these your check-up looks at. Nothing you don't select gets asked about.</p>
+    </div>
+    <div class="covers-grid">
+      <div class="cover-card"><div class="cover-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 21s-8-4.6-8-11.2C4 6 6.5 4 9.2 4c1.6 0 3 .8 3.8 2.2C13.8 4.8 15.2 4 16.8 4 19.5 4 22 6 22 9.8 22 16.4 12 21 12 21z" fill="currentColor"/></svg></div><span>Menopause &amp; Perimenopause</span></div>
+      <div class="cover-card"><div class="cover-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" fill="currentColor"/></svg></div><span>Periods &amp; Contraception</span></div>
+      <div class="cover-card"><div class="cover-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" fill="currentColor"/></svg></div><span>Pregnancy &amp; Postnatal</span></div>
+      <div class="cover-card"><div class="cover-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 21C7 17 4 13.5 4 9.5 4 6.5 6.3 4 9.3 4c1.4 0 2.7.7 3.7 2 1-1.3 2.3-2 3.7-2C19.7 4 22 6.5 22 9.5c0 4-3 7.5-10 11.5z" fill="currentColor"/></svg></div><span>Trying to Conceive</span></div>
+      <div class="cover-card"><div class="cover-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 3v6l-3 3 3 3v6h4v-4h6v4h4v-6l-3-3 3-3V3h-4v4H10V3H6z" fill="currentColor"/></svg></div><span>Pelvic &amp; Bladder Health</span></div>
+      <div class="cover-card"><div class="cover-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="12" r="4" fill="currentColor"/><circle cx="15" cy="12" r="4" fill="currentColor"/></svg></div><span>Breast Health &amp; Screening</span></div>
+      <div class="cover-card"><div class="cover-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 21C7 17 4 13.5 4 9.5 4 6.5 6.3 4 9.3 4c1.4 0 2.7.7 3.7 2 1-1.3 2.3-2 3.7-2C19.7 4 22 6.5 22 9.5c0 4-3 7.5-10 11.5z" fill="currentColor"/></svg></div><span>Heart Health</span></div>
+      <div class="cover-card"><div class="cover-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="7" r="4" fill="currentColor"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" fill="currentColor"/></svg></div><span>Mental Health &amp; Neurodivergence</span></div>
+      <div class="cover-card"><div class="cover-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" fill="currentColor"/></svg></div><span>Sexual Health</span></div>
+      <div class="cover-card"><div class="cover-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 6a3.5 3.5 0 100 7 3.5 3.5 0 000-7zm0 9c-3.3 0-9 1.6-9 5v2h18v-2c0-3.4-5.7-5-9-5z" fill="currentColor"/></svg></div><span>Memory &amp; Brain Health</span></div>
+      <div class="cover-card"><div class="cover-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 21s-8-4.6-8-11.2C4 6 6.5 4 9.2 4c1.6 0 3 .8 3.8 2.2C13.8 4.8 15.2 4 16.8 4 19.5 4 22 6 22 9.8 22 16.4 12 21 12 21z" fill="currentColor"/></svg></div><span>Blood &amp; Energy Health</span></div>
+      <div class="cover-card"><div class="cover-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 6v6c0 5 3.4 9.3 8 10 4.6-.7 8-5 8-10V6l-8-4z" fill="currentColor"/></svg></div><span>Bone, Brain &amp; Strength</span></div>
+      <div class="cover-card"><div class="cover-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="currentColor"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" fill="currentColor"/></svg></div><span>Pregnancy Options &amp; Support</span></div>
+    </div>
+    <p class="covers-note">This isn't a medical assessment. It's a starting point, built with input from practitioners, and every report is checked by one before it reaches you.</p>
+  </div>
+</section>
+
+<!-- ============ LIFE STAGES (categories) ============ -->
+<section id="stages">
   <div class="wrap">
     <div class="section-head center">
       <span class="eyebrow">Who this is for</span>
-      <h2 class="section-title">Three stages. One picture.</h2>
-    </div>
-
-    <div class="avatars" aria-hidden="true">
-      <div class="avatar a1">
-        <svg width="52" height="52" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="#C2367B"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" fill="#C2367B"/></svg>
-      </div>
-      <div class="avatar a2">
-        <svg width="60" height="60" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4.4" fill="#7C2AE8"/><path d="M3.5 21.5c0-4.9 3.8-8.5 8.5-8.5s8.5 3.6 8.5 8.5" fill="#7C2AE8"/></svg>
-      </div>
-      <div class="avatar a3">
-        <svg width="52" height="52" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="#C9A227"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" fill="#C9A227"/></svg>
-      </div>
+      <h2 class="section-title">Start with your life stage.</h2>
+      <p class="section-sub">Your report always includes the areas specific to your stage, plus whatever else you choose to add.</p>
     </div>
 
     <div class="cards">
       <div class="card">
+        <div class="card-icon" style="background:var(--magenta-pale);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="#C2367B"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" fill="#C2367B"/></svg></div>
         <h3>Perimenopause &amp; menopause</h3>
         <p>Understand your symptoms, what's driving them, and what your options actually are.</p>
       </div>
       <div class="card">
+        <div class="card-icon" style="background:var(--purple-pale);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="#7C2AE8"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" fill="#7C2AE8"/></svg></div>
         <h3>Pregnancy &amp; postnatal</h3>
         <p>A check-in on your mood, recovery and support, at a stage that's easy to move through unheard.</p>
       </div>
       <div class="card">
-        <h3>Bone, brain &amp; strength</h3>
-        <p>Protect your independence for decades ahead, starting with where you stand today.</p>
+        <div class="card-icon" style="background:var(--gold-pale);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 21C7 17 4 13.5 4 9.5 4 6.5 6.3 4 9.3 4c1.4 0 2.7.7 3.7 2 1-1.3 2.3-2 3.7-2C19.7 4 22 6.5 22 9.5c0 4-3 7.5-10 11.5z" fill="#C9A227"/></svg></div>
+        <h3>Trying to conceive</h3>
+        <p>Small, well-evidenced habits that genuinely support the process, alongside patience.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:var(--magenta-pale);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 3v6l-3 3 3 3v6h4v-4h6v4h4v-6l-3-3 3-3V3h-4v4H10V3H6z" fill="#C2367B"/></svg></div>
+        <h3>Every stage</h3>
+        <p>Bone, brain and strength, plus any of the other 12 topics you want to add, whatever stage you're at.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section id="ask">
+<!-- ============ SOCIAL PROOF 2: how we keep this trustworthy ============ -->
+<section id="proof-2">
   <div class="wrap">
     <div class="center">
-      <span class="eyebrow-light">What we'll ask about</span>
-      <h2 class="section-title">Six areas, matched to your stage of life.</h2>
+      <span class="eyebrow-light">Built the right way</span>
+      <h2 class="section-title">How we keep this trustworthy.</h2>
+      <p class="section-sub">Not a gimmick, not a quiz that sells your data. Here's what actually happens with your answers.</p>
     </div>
-    <div class="icon-grid">
-      <div class="item">
-        <div class="icon-badge"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 21s-8-4.6-8-11.2C4 6 6.5 4 9.2 4c1.6 0 3 .8 3.8 2.2C13.8 4.8 15.2 4 16.8 4 19.5 4 22 6 22 9.8 22 16.4 12 21 12 21z" fill="#fff"/></svg></div>
-        <span>Hormones</span>
+    <div class="trust-grid">
+      <div class="trust-item">
+        <h3>Practitioner reviewed</h3>
+        <p>Every report is checked by a qualified practitioner. Your account shows honestly whether that review has happened yet.</p>
       </div>
-      <div class="item">
-        <div class="icon-badge"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="7" r="4" fill="#fff"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" fill="#fff"/></svg></div>
-        <span>Mood &amp; support</span>
+      <div class="trust-item">
+        <h3>Your data stays yours</h3>
+        <p>We never sell raw lead data. What you share is used to build your report, not passed around to third parties.</p>
       </div>
-      <div class="item">
-        <div class="icon-badge"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M6 3v6l-3 3 3 3v6h4v-4h6v4h4v-6l-3-3 3-3V3h-4v4H10V3H6z" fill="#fff"/></svg></div>
-        <span>Bones &amp; strength</span>
+      <div class="trust-item">
+        <h3>Grounded in real guidance</h3>
+        <p>Content is written against established NHS guidance on each topic, not generic wellness advice.</p>
       </div>
-      <div class="item">
-        <div class="icon-badge"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm1 5v4.6l3.5 2.1-.75 1.25L11 13V8h2z" fill="#fff"/></svg></div>
-        <span>Sleep</span>
-      </div>
-      <div class="item">
-        <div class="icon-badge"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 6a3.5 3.5 0 100 7 3.5 3.5 0 000-7zm0 9c-3.3 0-9 1.6-9 5v2h18v-2c0-3.4-5.7-5-9-5z" fill="#fff"/></svg></div>
-        <span>Memory &amp; focus</span>
-      </div>
-      <div class="item">
-        <div class="icon-badge"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 6v6c0 5 3.4 9.3 8 10 4.6-.7 8-5 8-10V6l-8-4z" fill="#fff"/></svg></div>
-        <span>Family history</span>
-      </div>
-    </div>
-    <p class="note">This isn't a medical assessment. It's a starting point, built with input from practitioners, and every report is checked by one before it reaches you.</p>
-  </div>
-</section>
-
-<section id="how">
-  <div class="wrap">
-    <div class="center">
-      <span class="eyebrow">How it works</span>
-      <h2 class="section-title">Three steps, no waiting room.</h2>
-    </div>
-    <div class="steps">
-      <div class="step"><div class="step-icon">1</div><h3>Take the check</h3><p>A few minutes of honest questions, matched to your stage of life.</p></div>
-      <div class="step"><div class="step-icon">2</div><h3>Get your report</h3><p>A personal, plain-language summary, reviewed by a practitioner before it's sent.</p></div>
-      <div class="step"><div class="step-icon">3</div><h3>Book, if you want to</h3><p>Take it to a consultation, or simply keep it for yourself.</p></div>
     </div>
   </div>
 </section>
 
-<section id="get">
+<!-- ============ BENEFITS (what you get) ============ -->
+<section id="benefits">
   <div class="wrap center">
     <span class="eyebrow">What you'll get</span>
     <h2 class="section-title">Something to act on, not just a list of symptoms.</h2>
     <ul class="getlist">
-      <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>A clear picture of what's going on with your hormones, mood or strength right now</li>
-      <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Practical next steps you can start this week</li>
+      <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>A clear picture of exactly the topics you chose to cover, nothing forced, nothing skipped</li>
+      <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Practical next steps you can start this week, for every area you asked about</li>
       <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>A recommendation for which specialist is right for you, if any</li>
+      <li><span class="tick"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M4 12l6 6L20 6" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>A downloadable PDF report you can keep, or take to a GP appointment</li>
     </ul>
     <div class="reassure">
       <p><strong>This is not a diagnosis.</strong> It's a starting point for a conversation with a practitioner who can actually help.</p>
     </div>
+  </div>
+</section>
+
+<!-- ============ SOCIAL PROOF 3: community ============ -->
+<section id="proof-3">
+  <div class="wrap">
+    <div class="community-band">
+      <div class="community-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="7" r="4" fill="currentColor"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" fill="currentColor"/></svg></div>
+      <div>
+        <h3>You don't have to go through it alone</h3>
+        <p>Everyone who completes a check is welcome in our free WhatsApp community, for support from people at a similar stage, not just advice from a screen.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about">
+  <div class="wrap">
+    <span class="eyebrow">Why we built this</span>
+    <h2 class="section-title">Women's health has been under-discussed for too long.</h2>
+    <p>Menopause, periods, pelvic health, heart disease in women, ADHD and autism in women, they're all common, and they've all historically been under-treated or missed because the right questions rarely got asked. The Full Picture exists to ask them properly, on your terms, and to point you toward real help when something's worth a proper conversation.</p>
+    <p>We're not a replacement for your GP or a diagnosis. We're a clear, honest starting point, checked by a practitioner, built from established medical guidance, and free to take.</p>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head center">
+      <span class="eyebrow">Questions</span>
+      <h2 class="section-title">Frequently asked questions.</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Is this a diagnosis?</summary>
+        <p>No. It's an informational starting point built from your answers, reviewed by a practitioner, and designed to make your next conversation with a GP or specialist more useful. It never replaces medical advice.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is it really free?</summary>
+        <p>Yes, taking the check and getting your report costs nothing.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Do I have to answer every topic?</summary>
+        <p>No. After your life stage, you choose which topics you want covered. You'll only be asked about the ones you pick.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Will a real person see my answers?</summary>
+        <p>Yes. Every report is reviewed by a qualified practitioner. Your account page shows honestly whether that review has happened yet for your report.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What happens to my data?</summary>
+        <p>Your answers are used to build your report. We never sell raw lead data to third parties.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Do I have to join the WhatsApp community?</summary>
+        <p>No, it's entirely optional. You'll get a link after your report is ready if you'd like to join.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section id="final-cta">
+  <div class="wrap">
+    <h2>Ready to see your full picture?</h2>
+    <p>Pick your life stage, choose what matters to you, and get a report built around your actual answers.</p>
+    <button class="cta" id="final-start-btn">Start the free check <span aria-hidden="true">&rarr;</span></button>
   </div>
 </section>
 
@@ -384,12 +557,14 @@
 <!-- ================= QUIZ ================= -->
 <section id="quiz" hidden>
   <div class="wrap">
-    <div class="progress-label" id="progress-label">Question 1</div>
-    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
-    <div id="question-mount"></div>
-    <div class="quiz-nav">
-      <button class="btn-ghost" id="back-btn">Back</button>
-      <button class="btn-primary" id="next-btn">Continue</button>
+    <div class="q-page-head">
+      <span class="eyebrow">Your Women's Health Check</span>
+      <h2 class="q-page-title">Answer what applies to you</h2>
+      <p class="q-page-sub">Pick your life stage and the topics you'd like your report to cover, everything below updates to match. Nothing here is required beyond your life stage, answer as much or as little as you like.</p>
+    </div>
+    <div id="quiz-mount"></div>
+    <div class="quiz-submit-row">
+      <button class="btn-primary ready" id="submit-quiz-btn">See my report</button>
     </div>
   </div>
 </section>
@@ -456,12 +631,11 @@
 
 <script>
 (function(){
-  var landing = document.getElementById('landing');
-  var forYou = document.getElementById('for-you');
-  var ask = document.getElementById('ask');
-  var how = document.getElementById('how');
-  var get = document.getElementById('get');
+  var landingSections = ['landing','proof-1','covers','stages','proof-2','benefits','proof-3','about','faq','final-cta'].map(function(id){
+    return document.getElementById(id);
+  });
   var footer = document.querySelector('footer');
+  var header = document.querySelector('header');
   var quiz = document.getElementById('quiz');
   var report = document.getElementById('report');
 
@@ -469,12 +643,31 @@
 
   var MATERNAL_STAGES = ['Pregnant','Postnatal (within 2 years)'];
   var MENOPAUSE_STAGES = ['Perimenopause','Menopause','Postmenopause'];
-  var PERIODS_STAGES = ['Trying to conceive','Perimenopause','None of these currently apply'];
-  var PREGNANCY_CHOICE_STAGES = ['Trying to conceive','Pregnant','Perimenopause','None of these currently apply'];
+  var PERIODS_STAGES = ['Trying to conceive','Perimenopause'];
+  var PREGNANCY_CHOICE_STAGES = ['Trying to conceive','Pregnant','Perimenopause'];
+
+  function topicOptions(a){
+    var opts = [];
+    if(PERIODS_STAGES.indexOf(a.lifeStage) > -1){ opts.push('Periods and Contraception'); }
+    opts.push('Pelvic, Bladder and Reproductive Health');
+    opts.push('Breast Health and Screening');
+    opts.push('Heart Health');
+    if(MATERNAL_STAGES.indexOf(a.lifeStage) === -1){ opts.push('Mental Health and Neurodivergence'); }
+    opts.push('Sexual Health');
+    opts.push('Memory and Brain Health');
+    opts.push('Blood and Energy Health');
+    if(PREGNANCY_CHOICE_STAGES.indexOf(a.lifeStage) > -1){ opts.push('Pregnancy Options and Support'); }
+    return opts;
+  }
+  function hasTopic(a, topic){
+    return !!(a.topicsOfInterest && a.topicsOfInterest.indexOf(topic) > -1);
+  }
 
   var questions = [
     { id:'lifeStage', section:'gate', text:"Which of these best describes you right now?", type:'single',
-      options:['Trying to conceive','Pregnant','Postnatal (within 2 years)','Perimenopause','Menopause','Postmenopause','None of these currently apply'] },
+      options:['Trying to conceive','Pregnant','Postnatal (within 2 years)','Perimenopause','Menopause','Postmenopause'] },
+    { id:'topicsOfInterest', section:'gate', text:"Which of these would you like your report to cover? Select as many as you like, we'll only ask about the ones you pick. You can also skip this and just get your core check.", type:'multi', allowEmpty:true,
+      options: function(a){ return topicOptions(a); } },
     { id:'sleep', section:'core', text:"How would you rate your sleep quality over the past month?", type:'single',
       options:['Very poor','Poor','Fair','Good','Very good'] },
     { id:'energy', section:'core', text:"How would you describe your energy levels day to day?", type:'single',
@@ -518,103 +711,133 @@
 
     { id:'periodPain', section:'periods', text:"How would you describe period pain, if you have periods?", type:'single',
       options:['No periods currently','Mild or manageable','Moderate, affects some days','Severe, affects daily life'],
-      showIf: function(a){ return PERIODS_STAGES.indexOf(a.lifeStage) > -1; } },
+      showIf: function(a){ return PERIODS_STAGES.indexOf(a.lifeStage) > -1 && hasTopic(a, 'Periods and Contraception'); } },
     { id:'periodFlow', section:'periods', text:"How would you describe your period flow?", type:'single',
       options:['No periods currently','Light','Moderate','Heavy, needs frequent changes or overnight protection'],
-      showIf: function(a){ return PERIODS_STAGES.indexOf(a.lifeStage) > -1; } },
+      showIf: function(a){ return PERIODS_STAGES.indexOf(a.lifeStage) > -1 && hasTopic(a, 'Periods and Contraception'); } },
     { id:'pmsImpact', section:'periods', text:"How much do symptoms in the days before your period (mood, bloating, breast tenderness) affect you?", type:'single',
       options:['Not at all','A little','Moderately','Significantly'],
-      showIf: function(a){ return PERIODS_STAGES.indexOf(a.lifeStage) > -1; } },
+      showIf: function(a){ return PERIODS_STAGES.indexOf(a.lifeStage) > -1 && hasTopic(a, 'Periods and Contraception'); } },
     { id:'contraception', section:'periods', text:"Are you currently using contraception?", type:'single',
       options:['Not using any','Hormonal (pill, patch, ring, injection)','Long-acting (coil or implant)','Barrier methods (condoms, diaphragm)','Natural family planning','Not applicable right now'],
-      showIf: function(a){ return a.lifeStage === 'Perimenopause' || a.lifeStage === 'None of these currently apply'; } },
+      showIf: function(a){ return a.lifeStage === 'Perimenopause' && hasTopic(a, 'Periods and Contraception'); } },
 
     { id:'bladderLeaks', section:'pelvic', text:"Do you ever leak urine when you cough, sneeze, exercise, or feel a sudden urge?", type:'single',
-      options:['Never','Occasionally','Regularly','Most days'] },
+      options:['Never','Occasionally','Regularly','Most days'],
+      showIf: function(a){ return hasTopic(a, 'Pelvic, Bladder and Reproductive Health'); } },
     { id:'pelvicFloorExercise', section:'pelvic', text:"Do you currently do pelvic floor exercises?", type:'single',
-      options:['Regularly','Occasionally','Never','Not sure how to'] },
+      options:['Regularly','Occasionally','Never','Not sure how to'],
+      showIf: function(a){ return hasTopic(a, 'Pelvic, Bladder and Reproductive Health'); } },
     { id:'pelvicSymptoms', section:'pelvic', text:"Have you noticed any of these recently?", type:'multi',
-      options:['Pelvic pain','Unusual vaginal discharge or irritation','Pain during sex','Bloating that doesn\'t settle','Changes to your vulva or vagina you\'ve noticed','None of these'] },
+      options:['Pelvic pain','Unusual vaginal discharge or irritation','Pain during sex','Bloating that doesn\'t settle','Changes to your vulva or vagina you\'ve noticed','None of these'],
+      showIf: function(a){ return hasTopic(a, 'Pelvic, Bladder and Reproductive Health'); } },
     { id:'utiFrequency', section:'pelvic', text:"How often do you get urinary tract infections (UTIs)?", type:'single',
-      options:['Never or rarely','Occasionally, a few times a year','Frequently, most months'] },
+      options:['Never or rarely','Occasionally, a few times a year','Frequently, most months'],
+      showIf: function(a){ return hasTopic(a, 'Pelvic, Bladder and Reproductive Health'); } },
 
     { id:'breastChecks', section:'breast', text:"How often do you check your breasts for changes?", type:'single',
-      options:['Regularly, roughly monthly','Occasionally','Rarely or never'] },
+      options:['Regularly, roughly monthly','Occasionally','Rarely or never'],
+      showIf: function(a){ return hasTopic(a, 'Breast Health and Screening'); } },
     { id:'breastChanges', section:'breast', text:"Have you noticed any new lumps, changes in shape, skin changes, or nipple changes recently?", type:'single',
-      options:['No','Yes, and I\'ve had it checked','Yes, not checked yet'] },
+      options:['No','Yes, and I\'ve had it checked','Yes, not checked yet'],
+      showIf: function(a){ return hasTopic(a, 'Breast Health and Screening'); } },
     { id:'breastScreening', section:'breast', text:"Have you had a breast screening (mammogram) if you're in the age range it's offered?", type:'single',
-      options:['Not yet in the age range','Yes, up to date','No, overdue','Not sure'] },
+      options:['Not yet in the age range','Yes, up to date','No, overdue','Not sure'],
+      showIf: function(a){ return hasTopic(a, 'Breast Health and Screening'); } },
 
     { id:'heartFamilyHistory', section:'heart', text:"Does your immediate family have a history of heart disease or stroke before age 60?", type:'single',
-      options:['Yes','No','Not sure'] },
+      options:['Yes','No','Not sure'],
+      showIf: function(a){ return hasTopic(a, 'Heart Health'); } },
     { id:'bloodPressure', section:'heart', text:"Do you know your blood pressure, and is it in the normal range?", type:'single',
-      options:["Yes, and it's normal","Yes, and it's raised",'No, haven\'t checked recently','Not sure'] },
+      options:["Yes, and it's normal","Yes, and it's raised",'No, haven\'t checked recently','Not sure'],
+      showIf: function(a){ return hasTopic(a, 'Heart Health'); } },
     { id:'palpitations', section:'heart', text:"Have you noticed heart palpitations, unusual breathlessness, or chest discomfort recently?", type:'single',
-      options:['No','Occasionally','Regularly'] },
+      options:['No','Occasionally','Regularly'],
+      showIf: function(a){ return hasTopic(a, 'Heart Health'); } },
     { id:'smoking', section:'heart', text:"Do you currently smoke?", type:'single',
-      options:['No, never','No, but used to','Yes'] },
+      options:['No, never','No, but used to','Yes'],
+      showIf: function(a){ return hasTopic(a, 'Heart Health'); } },
 
     { id:'generalMood', section:'mental_health', text:"Over the past few weeks, how would you describe your mood overall?", type:'single',
       options:['Good, stable','Some low or anxious days','Low or anxious most days','Struggling significantly'],
-      showIf: function(a){ return MATERNAL_STAGES.indexOf(a.lifeStage) === -1; } },
+      showIf: function(a){ return MATERNAL_STAGES.indexOf(a.lifeStage) === -1 && hasTopic(a, 'Mental Health and Neurodivergence'); } },
     { id:'adhdTraits', section:'mental_health', text:"Do any of these feel true for you, and have done for a long time (not just recently)?", type:'multi',
       options:['Trouble focusing or finishing tasks','Losing things or forgetting appointments often','Feeling restless or needing to move','Interrupting or struggling to wait your turn','None of these'],
-      showIf: function(a){ return MATERNAL_STAGES.indexOf(a.lifeStage) === -1; } },
+      showIf: function(a){ return MATERNAL_STAGES.indexOf(a.lifeStage) === -1 && hasTopic(a, 'Mental Health and Neurodivergence'); } },
     { id:'autismTraits', section:'mental_health', text:"Do any of these feel true for you?", type:'multi',
       options:['Finding social situations draining or hard to read','Strong need for routine or discomfort with sudden change','Intense focus on specific interests','Sensory sensitivity (sound, light, texture)','None of these'],
-      showIf: function(a){ return MATERNAL_STAGES.indexOf(a.lifeStage) === -1; } },
+      showIf: function(a){ return MATERNAL_STAGES.indexOf(a.lifeStage) === -1 && hasTopic(a, 'Mental Health and Neurodivergence'); } },
 
     { id:'sexualHealthCheck', section:'sexual_health', text:"When did you last have a sexual health check-up (STI screening), if relevant to you?", type:'single',
-      options:['Not applicable to me','Within the last year','More than a year ago','Never, and it might be relevant'] },
+      options:['Not applicable to me','Within the last year','More than a year ago','Never, and it might be relevant'],
+      showIf: function(a){ return hasTopic(a, 'Sexual Health'); } },
     { id:'sexualHealthSymptoms', section:'sexual_health', text:"Have you noticed any of these recently?", type:'multi',
-      options:['Unusual discharge','Pain or discomfort during sex','Itching, soreness, or unusual odour','Unexplained bleeding between periods or after sex','None of these'] },
+      options:['Unusual discharge','Pain or discomfort during sex','Itching, soreness, or unusual odour','Unexplained bleeding between periods or after sex','None of these'],
+      showIf: function(a){ return hasTopic(a, 'Sexual Health'); } },
     { id:'sexualWellbeing', section:'sexual_health', text:"How would you describe your satisfaction with your sex life right now, if this is relevant to you?", type:'single',
-      options:['Not applicable / prefer not to say','Satisfied','Some concerns','Significant concerns, e.g. pain or low desire affecting you'] },
+      options:['Not applicable / prefer not to say','Satisfied','Some concerns','Significant concerns, e.g. pain or low desire affecting you'],
+      showIf: function(a){ return hasTopic(a, 'Sexual Health'); } },
 
     { id:'brainFamilyHistory', section:'brain', text:"Does your immediate family have a history of dementia or Alzheimer's disease?", type:'single',
-      options:['Yes','No','Not sure'] },
+      options:['Yes','No','Not sure'],
+      showIf: function(a){ return hasTopic(a, 'Memory and Brain Health'); } },
     { id:'brainLifestyle', section:'brain', text:"Which of these are part of your regular routine?", type:'multi',
-      options:['Regular physical activity','Activities that challenge your brain (learning, puzzles, reading)','Good quality sleep most nights','Regular social contact','None of these currently'] },
+      options:['Regular physical activity','Activities that challenge your brain (learning, puzzles, reading)','Good quality sleep most nights','Regular social contact','None of these currently'],
+      showIf: function(a){ return hasTopic(a, 'Memory and Brain Health'); } },
 
     { id:'anaemiaSymptoms', section:'blood_energy', text:"Have you noticed any of these recently?", type:'multi',
-      options:['Pale skin, lips, or inside of eyelids','Shortness of breath with normal activity','Dizziness or lightheadedness','Unusual cravings for ice or non-food items','Brittle nails or hair loss','None of these'] },
+      options:['Pale skin, lips, or inside of eyelids','Shortness of breath with normal activity','Dizziness or lightheadedness','Unusual cravings for ice or non-food items','Brittle nails or hair loss','None of these'],
+      showIf: function(a){ return hasTopic(a, 'Blood and Energy Health'); } },
 
     { id:'pregnancyOptionsInterest', section:'pregnancy_choices', text:"Would information about your options around pregnancy, including abortion care, be helpful to you right now?", type:'single',
       options:['Not relevant to me right now','I already know my options and don\'t need more information','I\'d find general information helpful','I\'d like details on accessing support now'],
-      showIf: function(a){ return PREGNANCY_CHOICE_STAGES.indexOf(a.lifeStage) > -1; } }
+      showIf: function(a){ return PREGNANCY_CHOICE_STAGES.indexOf(a.lifeStage) > -1 && hasTopic(a, 'Pregnancy Options and Support'); } }
   ];
+
+  var SECTION_LABELS = {
+    gate:'Getting started', core:'General', menopause:'Menopause and hormones', maternal:'Motherhood',
+    strength:'Bone, brain and strength', periods:'Periods and contraception', pelvic:'Pelvic and bladder health',
+    breast:'Breast health', heart:'Heart health', mental_health:'Mental health', sexual_health:'Sexual health',
+    brain:'Memory and brain health', blood_energy:'Blood and energy', pregnancy_choices:'Pregnancy options'
+  };
 
   function visibleQuestions(){
     return questions.filter(function(q){ return !q.showIf || q.showIf(answers); });
   }
 
-  var currentIndex = 0;
+  function questionAnswered(q){
+    if(q.allowEmpty) return true;
+    return q.type === 'multi' ? !!(answers[q.id] && answers[q.id].length > 0) : !!answers[q.id];
+  }
 
-  function renderQuestion(){
-    var qs = visibleQuestions();
-    var q = qs[currentIndex];
-    var mount = document.getElementById('question-mount');
-    var sectionLabel = {
-      gate:'Getting started', core:'General', menopause:'Menopause and hormones', maternal:'Motherhood',
-      strength:'Bone, brain and strength', periods:'Periods and contraception', pelvic:'Pelvic and bladder health',
-      breast:'Breast health', heart:'Heart health', mental_health:'Mental health', sexual_health:'Sexual health',
-      brain:'Memory and brain health', blood_energy:'Blood and energy', pregnancy_choices:'Pregnancy options'
-    }[q.section];
-
-    var html = '<div class="q-eyebrow">' + sectionLabel + '</div>';
-    html += '<div class="q-text">' + q.text + '</div>';
-    html += '<div class="options" role="group" aria-label="' + q.text + '">';
-    q.options.forEach(function(opt){
-      var selected = q.type === 'multi'
-        ? (answers[q.id] && answers[q.id].indexOf(opt) > -1)
-        : answers[q.id] === opt;
-      html += '<button class="opt' + (selected ? ' selected' : '') + '" data-opt="' + opt.replace(/"/g,'&quot;') + '">' + opt + '</button>';
+  // Renders every currently-relevant question stacked on one page. Runs on
+  // every option click so blocks that depend on life stage or the topic
+  // picker appear/disappear immediately, rather than gating navigation.
+  function renderQuiz(){
+    var mount = document.getElementById('quiz-mount');
+    var vqs = visibleQuestions();
+    var html = '';
+    vqs.forEach(function(q){
+      if(q.allowEmpty && q.type === 'multi' && answers[q.id] === undefined){ answers[q.id] = []; }
+      var qOptions = typeof q.options === 'function' ? q.options(answers) : q.options;
+      html += '<div class="qblock" id="qblock-' + q.id + '">';
+      html += '<div class="q-eyebrow">' + SECTION_LABELS[q.section] + '</div>';
+      html += '<div class="q-text">' + q.text + '</div>';
+      html += '<div class="options" role="group" aria-label="' + q.text + '">';
+      qOptions.forEach(function(opt){
+        var selected = q.type === 'multi'
+          ? (answers[q.id] && answers[q.id].indexOf(opt) > -1)
+          : answers[q.id] === opt;
+        html += '<button type="button" class="opt' + (selected ? ' selected' : '') + '" data-qid="' + q.id + '" data-opt="' + opt.replace(/"/g,'&quot;') + '">' + opt + '</button>';
+      });
+      html += '</div></div>';
     });
-    html += '</div>';
     mount.innerHTML = html;
 
     mount.querySelectorAll('.opt').forEach(function(btn){
       btn.addEventListener('click', function(){
+        var qid = btn.getAttribute('data-qid');
+        var q = questions.filter(function(qq){ return qq.id === qid; })[0];
         var opt = btn.getAttribute('data-opt');
         if(q.type === 'multi'){
           answers[q.id] = answers[q.id] || [];
@@ -623,54 +846,39 @@
         } else {
           answers[q.id] = opt;
         }
-        renderQuestion();
+        renderQuiz();
       });
     });
-
-    document.getElementById('back-btn').style.visibility = currentIndex === 0 ? 'hidden' : 'visible';
-    document.getElementById('progress-label').textContent = 'Question ' + (currentIndex+1) + ' of ' + qs.length;
-    updateProgress();
-    updateNav();
   }
 
-  function updateNav(){
-    var qs = visibleQuestions();
-    var q = qs[currentIndex];
-    var answered = q.type === 'multi' ? (answers[q.id] && answers[q.id].length > 0) : !!answers[q.id];
-    var nextBtn = document.getElementById('next-btn');
-    nextBtn.classList.toggle('ready', !!answered);
-    nextBtn.textContent = (currentIndex === qs.length - 1) ? 'See my report' : 'Continue';
-  }
-
-  function updateProgress(){
-    var qs = visibleQuestions();
-    var pct = Math.round(((currentIndex) / qs.length) * 100);
-    document.getElementById('progress-fill').style.width = pct + '%';
-  }
-
-  document.getElementById('start-btn').addEventListener('click', function(){
-    [landing, forYou, ask, how, get, footer].forEach(function(el){ el.hidden = true; });
+  function startQuiz(){
+    landingSections.concat([footer]).forEach(function(el){ if(el) el.hidden = true; });
     quiz.hidden = false;
     answers = {};
-    currentIndex = 0;
     window.scrollTo(0,0);
-    renderQuestion();
-  });
+    renderQuiz();
+  }
+  document.getElementById('start-btn').addEventListener('click', startQuiz);
+  document.getElementById('nav-start-btn').addEventListener('click', startQuiz);
+  document.getElementById('final-start-btn').addEventListener('click', startQuiz);
 
-  document.getElementById('back-btn').addEventListener('click', function(){
-    if(currentIndex > 0){ currentIndex--; renderQuestion(); window.scrollTo(0,0); }
-  });
-
-  document.getElementById('next-btn').addEventListener('click', function(){
-    var qs = visibleQuestions();
-    if(!document.getElementById('next-btn').classList.contains('ready')) return;
-    if(currentIndex < qs.length - 1){
-      currentIndex++;
-      renderQuestion();
-      window.scrollTo(0,0);
-    } else {
-      showReport();
+  document.getElementById('submit-quiz-btn').addEventListener('click', function(){
+    var vqs = visibleQuestions();
+    for(var i = 0; i < vqs.length; i++){
+      var q = vqs[i];
+      if(!questionAnswered(q)){
+        var block = document.getElementById('qblock-' + q.id);
+        if(block){
+          block.classList.add('qblock-missing');
+          setTimeout(function(){ block.classList.remove('qblock-missing'); }, 1600);
+          if(typeof block.scrollIntoView === 'function'){
+            block.scrollIntoView({behavior:'smooth', block:'center'});
+          }
+        }
+        return;
+      }
     }
+    showReport();
   });
 
   function bandLabel(score, thresholds){
@@ -791,31 +999,76 @@
             next:['Book a consultation to discuss a bone density scan','Start a structured strength routine, ideally with guidance']}
     },
     periods: {
-      low:{label:'Nothing concerning'}, mid:{label:'Worth a conversation'}, high:{label:'Worth prioritising'}
+      low:{label:'Nothing concerning', text:"Your periods sound broadly typical, nothing here stands out as needing attention.",
+           next:['Keep a rough note of your cycle if anything changes','Cervical screening is offered from age 25, worth knowing when you\'re due']},
+      mid:{label:'Worth a conversation', text:"Some period-related symptoms here are worth discussing with a GP, even though nothing sounds urgent.",
+           next:['Book a GP appointment and describe your symptoms specifically','Track your cycle and symptoms for a couple of months first']},
+      high:{label:'Worth prioritising', text:"What you've described suggests your periods are significantly affecting your daily life.",
+            next:['Book a GP appointment as a priority','Ask directly about endometriosis, adenomyosis or PMDD by name']}
     },
     pelvic: {
-      low:{label:'No current concerns'}, mid:{label:'Some factors to watch'}, high:{label:'Worth prioritising'}
+      low:{label:'No current concerns', text:"Your pelvic and bladder health sounds in a good place right now.",
+           next:['Keep up pelvic floor exercises if you\'re already doing them','Start them now if you\'re not, it\'s a low-effort habit']},
+      mid:{label:'Some factors to watch', text:"A few things here, occasional leaking, pelvic symptoms or recurring UTIs, are worth a conversation.",
+           next:['Ask your GP about a pelvic health physiotherapy referral','Mention any leaking directly, even if it feels minor']},
+      high:{label:'Worth prioritising', text:"What you've described suggests your pelvic and bladder health deserves proper attention now.",
+            next:['Book a GP appointment and ask for a pelvic health physio referral','Don\'t wait for symptoms to feel embarrassing to mention']}
     },
     breast: {
-      low:{label:'No current concerns'}, mid:{label:'Worth a closer look'}, high:{label:'Get this checked now'}
+      low:{label:'No current concerns', text:"Nothing here stands out as needing attention right now.",
+           next:['Get into a light habit of checking for changes','Attend breast screening when invited, if you\'re in the age range']},
+      mid:{label:'Worth a closer look', text:"Something here, a change you've noticed or screening you're not sure about, is worth following up.",
+           next:['Book a GP appointment to have any change checked','If screening is overdue, get it rebooked']},
+      high:{label:'Get this checked now', text:"You've noticed a change that hasn't been checked yet, worth acting on promptly.",
+            next:['Book a GP appointment in the next few days','Most breast changes turn out not to be cancer, but get it checked']}
     },
     heart: {
-      low:{label:'Steady'}, mid:{label:'Worth a check-in'}, high:{label:'Worth prioritising'}
+      low:{label:'Steady', text:"Nothing here points to an immediate concern for your heart health.",
+           next:['Get your blood pressure checked if it\'s been a while, most pharmacies do this free','Keep up regular activity']},
+      mid:{label:'Worth a check-in', text:"A few factors here are worth getting properly checked, even though nothing sounds urgent.",
+           next:['Book a blood pressure check','If you smoke, ask your GP about support to stop']},
+      high:{label:'Worth prioritising', text:"The combination of factors here suggests your heart health deserves proper attention now.",
+            next:['Book a GP appointment for a full cardiovascular check','Mention your family history clearly, it changes how risk is assessed']}
     },
     mental_health: {
-      low:{label:'Doing okay'}, mid:{label:'Worth exploring further'}, high:{label:'Worth prioritising'}
+      low:{label:'Doing okay', text:"Your mood sounds broadly stable right now, without strong signs of ongoing difficulty.",
+           next:['Keep checking in with yourself regularly','ADHD and autism in women often present differently than stereotypes suggest, worth reading into if curious']},
+      mid:{label:'Worth exploring further', text:"There's a mix here, low mood, anxiety, or traits linked to ADHD or autism, worth taking seriously.",
+           next:['Book a GP appointment to talk through your mood','You can self-refer to NHS Talking Therapies without seeing a GP first']},
+      high:{label:'Worth prioritising', text:"What you've shared suggests you're finding things genuinely hard right now, and that deserves real support.",
+            next:['Speak with your GP soon, this week if you can','If you ever feel unable to cope or unsafe, contact your GP or NHS 111 immediately']}
     },
     sexual_health: {
-      low:{label:'No current concerns'}, mid:{label:'Worth a check-up'}, high:{label:'Get this checked soon'}
+      low:{label:'No current concerns', text:"Nothing here stands out as needing attention right now.",
+           next:['Keep up regular STI screening if you have new or multiple partners','Sexual health clinics offer free, confidential testing, no GP referral needed']},
+      mid:{label:'Worth a check-up', text:"Something here, a symptom, a while since your last check, or a concern about your sex life, is worth following up.",
+           next:['Book a sexual health check-up, at a clinic or via a postal kit','Pain during sex or low desire has treatable causes, worth raising']},
+      high:{label:'Get this checked soon', text:"What you've described is worth getting checked properly and fairly soon.",
+            next:['Book a sexual health clinic or GP appointment promptly','Clinics often offer same-day appointments for symptoms like this']}
     },
     brain: {
-      low:{label:'No current concerns'}, mid:{label:'Worth watching'}, high:{label:'Worth a proper check'}
+      low:{label:'No current concerns', text:"Nothing here points to a current concern for your memory or brain health.",
+           next:['Keep up habits that support brain health, they\'re worth maintaining deliberately','Stay socially connected, isolation is an under-recognised risk factor']},
+      mid:{label:'Worth watching', text:"You've noticed some change in memory or focus, worth paying attention to.",
+           next:['Mention the change to your GP, there are simple things to check first','If you\'re perimenopausal, mention that too, brain fog is a genuine symptom here']},
+      high:{label:'Worth a proper check', text:"The change you've described is worth a proper conversation with a GP.",
+            next:['Book a GP appointment specifically to discuss this','Ask for standard initial checks, bloods and thyroid function']}
     },
     blood_energy: {
-      low:{label:'No current concerns'}, mid:{label:'Worth checking'}, high:{label:'Worth prioritising'}
+      low:{label:'No current concerns', text:"Your energy levels and any symptoms here don't point to a current concern.",
+           next:['Include iron-rich foods where you can','If you have heavy periods, keep half an eye on your energy levels']},
+      mid:{label:'Worth checking', text:"A few things here, tiredness, some symptoms, or heavy periods, are worth a simple blood test.",
+           next:['Book a GP appointment and ask for a blood test to check iron levels','Mention your energy levels specifically and how long they\'ve been affected']},
+      high:{label:'Worth prioritising', text:"What you've described, persistent exhaustion alongside other symptoms, is worth checking properly and soon.",
+            next:['Book a GP appointment soon and ask for a blood test','Describe the impact clearly, don\'t push through it while waiting']}
     },
     pregnancy_choices: {
-      low:{label:'Not needed right now'}, mid:{label:'General information'}, high:{label:'Support available now'}
+      low:{label:'Not needed right now', text:"This isn't something you need more information on right now.",
+           next:['Your GP or a sexual health clinic are starting points if this ever becomes relevant']},
+      mid:{label:'General information', text:"You've said general information here would be helpful, so here's a starting point.",
+           next:['NHS.uk has clear, factual information on all pregnancy options','BPAS and MSI Reproductive Choices offer confidential advice, no GP referral needed']},
+      high:{label:'Support available now', text:"You've said you'd like details on accessing support now.",
+            next:['You can self-refer directly to BPAS or MSI Reproductive Choices','NHS abortion care is free, confidential and available without delay']}
     }
   };
 
@@ -856,20 +1109,32 @@
     if(isMaternalStage){
       html += trackHTML('', 'Maternal Wellbeing', scoreMaternal(), bandCopy.maternal[scoreMaternal()]);
     }
-    if(isPeriodsStage){
+    if(isPeriodsStage && hasTopic(answers, 'Periods and Contraception')){
       html += trackHTML('', 'Periods and Contraception', scorePeriods(), bandCopy.periods[scorePeriods()]);
     }
     html += trackHTML('gold', 'Bone, Brain and Strength', scoreStrength(), bandCopy.strength[scoreStrength()]);
-    html += trackHTML('', 'Pelvic, Bladder and Reproductive Health', scorePelvic(), bandCopy.pelvic[scorePelvic()]);
-    html += trackHTML('magenta', 'Breast Health and Screening', scoreBreast(), bandCopy.breast[scoreBreast()]);
-    html += trackHTML('gold', 'Heart Health', scoreHeart(), bandCopy.heart[scoreHeart()]);
-    if(!isMaternalStage){
+    if(hasTopic(answers, 'Pelvic, Bladder and Reproductive Health')){
+      html += trackHTML('', 'Pelvic, Bladder and Reproductive Health', scorePelvic(), bandCopy.pelvic[scorePelvic()]);
+    }
+    if(hasTopic(answers, 'Breast Health and Screening')){
+      html += trackHTML('magenta', 'Breast Health and Screening', scoreBreast(), bandCopy.breast[scoreBreast()]);
+    }
+    if(hasTopic(answers, 'Heart Health')){
+      html += trackHTML('gold', 'Heart Health', scoreHeart(), bandCopy.heart[scoreHeart()]);
+    }
+    if(!isMaternalStage && hasTopic(answers, 'Mental Health and Neurodivergence')){
       html += trackHTML('', 'Mental Health and Neurodivergence', scoreMentalHealth(), bandCopy.mental_health[scoreMentalHealth()]);
     }
-    html += trackHTML('magenta', 'Sexual Health', scoreSexualHealth(), bandCopy.sexual_health[scoreSexualHealth()]);
-    html += trackHTML('gold', 'Memory and Brain Health', scoreBrain(), bandCopy.brain[scoreBrain()]);
-    html += trackHTML('', 'Blood and Energy Health', scoreBloodEnergy(), bandCopy.blood_energy[scoreBloodEnergy()]);
-    if(isPregnancyChoiceStage){
+    if(hasTopic(answers, 'Sexual Health')){
+      html += trackHTML('magenta', 'Sexual Health', scoreSexualHealth(), bandCopy.sexual_health[scoreSexualHealth()]);
+    }
+    if(hasTopic(answers, 'Memory and Brain Health')){
+      html += trackHTML('gold', 'Memory and Brain Health', scoreBrain(), bandCopy.brain[scoreBrain()]);
+    }
+    if(hasTopic(answers, 'Blood and Energy Health')){
+      html += trackHTML('', 'Blood and Energy Health', scoreBloodEnergy(), bandCopy.blood_energy[scoreBloodEnergy()]);
+    }
+    if(isPregnancyChoiceStage && hasTopic(answers, 'Pregnancy Options and Support')){
       html += trackHTML('magenta', 'Pregnancy Options and Support', scorePregnancyChoices(), bandCopy.pregnancy_choices[scorePregnancyChoices()]);
     }
 
@@ -884,11 +1149,18 @@
   }
 
   function trackHTML(colorClass, title, band, copy){
-    return '' +
-      '<div class="track teaser ' + colorClass + '">' +
+    var html = '' +
+      '<div class="track ' + colorClass + '">' +
         '<h3>' + title + '</h3>' +
-        '<span class="band ' + band + '">' + copy.label + '</span>' +
-      '</div>';
+        '<span class="band ' + band + '">' + copy.label + '</span>';
+    if(copy.text){
+      html += '<p class="desc">' + copy.text + '</p>';
+    }
+    if(copy.next && copy.next.length){
+      html += '<ul class="next">' + copy.next.map(function(n){ return '<li>' + n + '</li>'; }).join('') + '</ul>';
+    }
+    html += '</div>';
+    return html;
   }
 
   document.getElementById('email-form').addEventListener('submit', function(e){
