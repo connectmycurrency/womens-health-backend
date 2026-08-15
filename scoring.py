@@ -17,12 +17,12 @@ PRECONCEPTION_STAGES = {"Trying to conceive"}
 # or could realistically expect, a period. Excludes pregnancy/postnatal
 # (no periods) and Menopause/Postmenopause (periods have stopped, already
 # covered by the menopause track's own periods question).
-PERIODS_STAGES = {"Trying to conceive", "Perimenopause", "None of these currently apply"}
+PERIODS_STAGES = {"Trying to conceive", "Perimenopause"}
 
 # Pregnancy options (including abortion information) is relevant to
 # anyone for whom pregnancy is a live possibility. Excludes Postnatal,
 # Menopause, and Postmenopause.
-PREGNANCY_CHOICE_STAGES = {"Trying to conceive", "Pregnant", "Perimenopause", "None of these currently apply"}
+PREGNANCY_CHOICE_STAGES = {"Trying to conceive", "Pregnant", "Perimenopause"}
 
 # General mental health & neurodivergence track is universal except for
 # pregnant/postnatal, where the dedicated Maternal Wellbeing track already
@@ -1058,7 +1058,6 @@ OVERVIEW_BY_STAGE = {
     "Pregnant": "You're currently pregnant, a stage with real physical and emotional change, where checking in on how you're coping matters as much as the physical side.",
     "Postnatal (within 2 years)": "You're in the postnatal period, still very much a time of adjustment and recovery, even well beyond the earliest weeks.",
     "Trying to conceive": "You're trying to conceive, a stage where small, well-evidenced habits can genuinely support the process, alongside patience.",
-    "None of these currently apply": "None of the specific life stages apply to you right now, so this report focuses on the areas relevant to everyone, longer-term strength and resilience.",
 }
 
 
@@ -1119,21 +1118,38 @@ def build_report(life_stage: str, answers: dict) -> dict:
             "education": TRACK_EDUCATION[key],
         }
 
-    if life_stage in PERIODS_STAGES:
+    # These 9 tracks are opt-in: the quiz shows a symptom picker right after
+    # the life-stage question, listing every topic (by its TRACK_TITLES
+    # label) relevant to that life stage, and only asks about, and includes,
+    # the ones the client actually selects. Menopause/Maternal/Preconception
+    # (life-stage driven) and Strength (always-on) are unaffected by this.
+    selected_topics = set(answers.get("topicsOfInterest", []))
+
+    if life_stage in PERIODS_STAGES and TRACK_TITLES["periods"] in selected_topics:
         _add_track("periods", score_periods(answers))
 
-    _add_track("pelvic", score_pelvic(answers))
-    _add_track("breast", score_breast(answers))
-    _add_track("heart", score_heart(answers))
+    if TRACK_TITLES["pelvic"] in selected_topics:
+        _add_track("pelvic", score_pelvic(answers))
 
-    if life_stage not in MENTAL_HEALTH_STAGES_EXCLUDE:
+    if TRACK_TITLES["breast"] in selected_topics:
+        _add_track("breast", score_breast(answers))
+
+    if TRACK_TITLES["heart"] in selected_topics:
+        _add_track("heart", score_heart(answers))
+
+    if life_stage not in MENTAL_HEALTH_STAGES_EXCLUDE and TRACK_TITLES["mental_health"] in selected_topics:
         _add_track("mental_health", score_mental_health(answers))
 
-    _add_track("sexual_health", score_sexual_health(answers))
-    _add_track("brain", score_brain(answers))
-    _add_track("blood_energy", score_blood_energy(answers))
+    if TRACK_TITLES["sexual_health"] in selected_topics:
+        _add_track("sexual_health", score_sexual_health(answers))
 
-    if life_stage in PREGNANCY_CHOICE_STAGES:
+    if TRACK_TITLES["brain"] in selected_topics:
+        _add_track("brain", score_brain(answers))
+
+    if TRACK_TITLES["blood_energy"] in selected_topics:
+        _add_track("blood_energy", score_blood_energy(answers))
+
+    if life_stage in PREGNANCY_CHOICE_STAGES and TRACK_TITLES["pregnancy_choices"] in selected_topics:
         _add_track("pregnancy_choices", score_pregnancy_choices(answers))
 
     overview = OVERVIEW_BY_STAGE.get(life_stage, "")
