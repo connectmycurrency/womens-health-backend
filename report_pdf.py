@@ -45,20 +45,20 @@ class SectionMarker(Flowable):
     def wrap(self, availWidth, availHeight):
         return (0, 0)
 
-PURPLE_DARK = HexColor("#2E0854")
-PURPLE = HexColor("#7C2AE8")
-PURPLE_PALE = HexColor("#F1E7FB")
-GOLD = HexColor("#C9A227")
-GOLD_PALE = HexColor("#FBF3DE")
-MAGENTA = HexColor("#C2367B")
-MAGENTA_PALE = HexColor("#FBE7F1")
-INK = HexColor("#241933")
-INK_SOFT = HexColor("#5B4E6D")
+TEAL_DARK = HexColor("#0B4F4A")
+TEAL = HexColor("#12897E")
+TEAL_PALE = HexColor("#E3F3F1")
+INK = HexColor("#16241F")
+INK_SOFT = HexColor("#52625F")
 WHITE = HexColor("#FFFFFF")
-BORDER = HexColor("#E4D9F0")
+BORDER = HexColor("#DCEBE8")
 
-BAND_ACCENT = {"low": GOLD, "mid": MAGENTA, "high": PURPLE}
-BAND_ACCENT_PALE = {"low": GOLD_PALE, "mid": MAGENTA_PALE, "high": PURPLE_PALE}
+TRAFFIC_LIGHT = {"low": HexColor("#1E8A4C"), "mid": HexColor("#E8A500"), "high": HexColor("#D64550")}
+TRAFFIC_LIGHT_PALE = {"low": HexColor("#E5F4EA"), "mid": HexColor("#FDF2DC"), "high": HexColor("#FBE7E7")}
+# Per-track detail pages now use the same traffic-light colours as the
+# at-a-glance page, one consistent severity system instead of two.
+BAND_ACCENT = TRAFFIC_LIGHT
+BAND_ACCENT_PALE = TRAFFIC_LIGHT_PALE
 
 PAGE_W, PAGE_H = A4
 MARGIN = 22 * mm
@@ -80,14 +80,14 @@ def _draw_cover(c, doc, user_name, life_stage):
     c.saveState()
     c.setFillColor(WHITE)
     c.rect(0, 0, PAGE_W, PAGE_H, fill=1, stroke=0)
-    _draw_wave(c, PAGE_H - 95 * mm, 55 * mm, PURPLE_DARK)
+    _draw_wave(c, PAGE_H - 95 * mm, 55 * mm, TEAL_DARK)
     # wave trough dips to roughly (PAGE_H - 95mm) - 22mm from the bottom edge,
     # so the title sits clear of it with room to spare.
     title_y = PAGE_H - 118 * mm
     subtitle_y = title_y - 10 * mm
     date_y = subtitle_y - 7 * mm
 
-    c.setFillColor(PURPLE_DARK)
+    c.setFillColor(TEAL_DARK)
     c.setFont("Helvetica-Bold", 26)
     c.drawCentredString(PAGE_W / 2, title_y, "Your Women's Health Check")
     c.setFont("Helvetica", 12)
@@ -97,7 +97,7 @@ def _draw_cover(c, doc, user_name, life_stage):
 
     # abstract "whole person" graphic, positioned well clear of the text above it
     cx, cy = PAGE_W / 2, 90 * mm
-    rings = [(42 * mm, PURPLE_PALE), (32 * mm, MAGENTA_PALE), (23 * mm, GOLD_PALE), (14 * mm, PURPLE)]
+    rings = [(42 * mm, TEAL_PALE), (32 * mm, TEAL_PALE), (23 * mm, TEAL_PALE), (14 * mm, TEAL)]
     for radius, color in rings:
         c.setFillColor(color)
         c.circle(cx, cy, radius, fill=1, stroke=0)
@@ -105,7 +105,7 @@ def _draw_cover(c, doc, user_name, life_stage):
     c.circle(cx, cy, 7 * mm, fill=1, stroke=0)
 
     # bottom brand strip
-    c.setFillColor(PURPLE_DARK)
+    c.setFillColor(TEAL_DARK)
     c.rect(0, 0, PAGE_W, 16 * mm, fill=1, stroke=0)
     c.setFillColor(WHITE)
     c.setFont("Helvetica-Bold", 10)
@@ -115,7 +115,7 @@ def _draw_cover(c, doc, user_name, life_stage):
 
 def _draw_header_footer(c, doc, label):
     c.saveState()
-    c.setFillColor(PURPLE_DARK)
+    c.setFillColor(TEAL_DARK)
     c.rect(0, PAGE_H - 14 * mm, PAGE_W, 14 * mm, fill=1, stroke=0)
     c.setFillColor(WHITE)
     c.setFont("Helvetica-Bold", 9)
@@ -152,14 +152,14 @@ def _render(user_name, life_stage, report, reviewed, reviewed_by, page_label_map
     tracks = report.get("tracks", {})
 
     styles = getSampleStyleSheet()
-    h1 = ParagraphStyle("H1", parent=styles["Heading1"], textColor=PURPLE_DARK, fontSize=18, spaceBefore=0, spaceAfter=10)
-    h2 = ParagraphStyle("H2", parent=styles["Heading2"], textColor=PURPLE_DARK, fontSize=13, spaceBefore=14, spaceAfter=6)
+    h1 = ParagraphStyle("H1", parent=styles["Heading1"], textColor=TEAL_DARK, fontSize=18, spaceBefore=0, spaceAfter=10)
+    h2 = ParagraphStyle("H2", parent=styles["Heading2"], textColor=TEAL_DARK, fontSize=13, spaceBefore=14, spaceAfter=6)
     body = ParagraphStyle("Body", parent=styles["Normal"], textColor=INK, fontSize=10.5, leading=15.5, spaceAfter=8)
     body_soft = ParagraphStyle("BodySoft", parent=styles["Normal"], textColor=INK_SOFT, fontSize=10, leading=14.5, spaceAfter=6)
     bullet = ParagraphStyle("Bullet", parent=styles["Normal"], textColor=INK, fontSize=10.5, leading=15, leftIndent=6, spaceAfter=4)
     band_label_style = ParagraphStyle("BandLabel", parent=styles["Normal"], fontSize=12, fontName="Helvetica-Bold", spaceAfter=8)
     summary_style = ParagraphStyle("Summary", parent=styles["Normal"], textColor=INK, fontSize=11.5, leading=16.5, fontName="Helvetica-Bold", spaceAfter=10)
-    box_title = ParagraphStyle("BoxTitle", parent=styles["Normal"], fontSize=10.5, fontName="Helvetica-Bold", textColor=PURPLE_DARK, spaceAfter=3)
+    box_title = ParagraphStyle("BoxTitle", parent=styles["Normal"], fontSize=10.5, fontName="Helvetica-Bold", textColor=TEAL_DARK, spaceAfter=3)
     box_body = ParagraphStyle("BoxBody", parent=styles["Normal"], fontSize=10, leading=14.5, textColor=INK)
     toc_style = ParagraphStyle("Toc", parent=styles["Normal"], fontSize=11.5, leading=20, textColor=INK)
     glance_track = ParagraphStyle("GlanceTrack", parent=styles["Normal"], fontSize=10.5, fontName="Helvetica-Bold", textColor=INK)
@@ -185,7 +185,7 @@ def _render(user_name, life_stage, report, reviewed, reviewed_by, page_label_map
     story.append(PageBreak())
 
     if reviewed:
-        review_line = f"Reviewed by {reviewed_by}." if reviewed_by else "Reviewed by a qualified practitioner."
+        review_line = f"Reviewed by {reviewed_by}." if reviewed_by else "Reviewed by a practitioner."
     else:
         review_line = "Awaiting practitioner review. Treat this report as provisional until reviewed."
 
@@ -232,7 +232,8 @@ def _render(user_name, life_stage, report, reviewed, reviewed_by, page_label_map
     bar_total = 90
     for key in tracks:
         t = tracks[key]
-        accent = BAND_ACCENT[t["band"]]
+        accent = TRAFFIC_LIGHT[t["band"]]
+        pale = TRAFFIC_LIGHT_PALE[t["band"]]
         fraction = band_width[t["band"]]
         fill_w = bar_total * fraction
         empty_w = bar_total - fill_w
@@ -254,7 +255,7 @@ def _render(user_name, life_stage, report, reviewed, reviewed_by, page_label_map
             style_cmds.append(("BACKGROUND", (col, 0), (col, 0), accent))
             col += 1
         if empty_w > 0:
-            style_cmds.append(("BACKGROUND", (col, 0), (col, 0), HexColor("#F0EAF7")))
+            style_cmds.append(("BACKGROUND", (col, 0), (col, 0), pale))
         row.setStyle(TableStyle(style_cmds))
         story.append(row)
         story.append(Spacer(1, 12))
@@ -271,6 +272,39 @@ def _render(user_name, life_stage, report, reviewed, reviewed_by, page_label_map
         story.append(Paragraph(t["label"], ParagraphStyle("bandlbl", parent=band_label_style, textColor=accent)))
         story.append(Paragraph(t["summary"], summary_style))
 
+        if t.get("reported_symptoms"):
+            story.append(Paragraph(
+                "Based on your answers: " + ", ".join(t["reported_symptoms"]).lower() + ".",
+                body_soft
+            ))
+        if t.get("reported_factors"):
+            story.append(Paragraph(
+                "Based on your answers: " + ", ".join(t["reported_factors"]).lower() + ".",
+                body_soft
+            ))
+
+        if t["band"] == "low":
+            # No current concern here, so this stays short, but "short"
+            # still means a proper sentence of context plus a couple of
+            # real next steps, not a single bare bullet with nothing
+            # around it.
+            if t.get("why_it_matters"):
+                first_sentence = t["why_it_matters"].split(". ")[0] + "."
+                story.append(Spacer(1, 4))
+                story.append(Paragraph(first_sentence, body))
+            if t.get("next_steps"):
+                story.append(Spacer(1, 6))
+                for step in t["next_steps"][:2]:
+                    story.append(Paragraph(f"&bull; {step}", bullet))
+            story.append(Spacer(1, 8))
+            story.append(Paragraph(
+                "No referral needed here right now.",
+                body_soft
+            ))
+            story.append(Spacer(1, 14))
+            story.append(PageBreak())
+            continue
+
         if t.get("education"):
             edu_table = _boxed_table(
                 [[Paragraph("Understanding this stage", box_title)],
@@ -278,7 +312,7 @@ def _render(user_name, life_stage, report, reviewed, reviewed_by, page_label_map
                 [None]
             )
             edu_table.setStyle(TableStyle([
-                ("BACKGROUND", (0, 0), (-1, 0), PURPLE_PALE),
+                ("BACKGROUND", (0, 0), (-1, 0), TEAL_PALE),
                 ("VALIGN", (0, 0), (-1, -1), "TOP"),
                 ("LEFTPADDING", (0, 0), (-1, -1), 12),
                 ("RIGHTPADDING", (0, 0), (-1, -1), 12),
@@ -338,7 +372,7 @@ def _render(user_name, life_stage, report, reviewed, reviewed_by, page_label_map
 
         if t.get("specialist"):
             story.append(Paragraph("Recommended specialist", h2))
-            story.append(Paragraph(t["specialist"], ParagraphStyle("specname", fontSize=11, fontName="Helvetica-Bold", textColor=PURPLE_DARK, spaceAfter=3)))
+            story.append(Paragraph(t["specialist"], ParagraphStyle("specname", fontSize=11, fontName="Helvetica-Bold", textColor=TEAL_DARK, spaceAfter=3)))
             if t.get("specialist_expect"):
                 story.append(Paragraph(t["specialist_expect"], body_soft))
 
@@ -355,7 +389,6 @@ def _render(user_name, life_stage, report, reviewed, reviewed_by, page_label_map
         [Paragraph("NHS 111", box_title), Paragraph("For urgent, non-emergency support any time, day or night.", box_body)],
         [Paragraph("British Menopause Society", box_title), Paragraph("Independent, evidence-based information specifically on menopause.", box_body)],
         [Paragraph("Local health visiting service", box_title), Paragraph("Ongoing postnatal support, usually contactable directly without needing a GP appointment first.", box_body)],
-        [Paragraph("National Domestic Abuse Helpline", box_title), Paragraph("Freephone, confidential, 24 hours a day: 0808 2000 247. Run by Refuge, for anyone worried about their own safety or someone else's.", box_body)],
     ]
     story.append(_boxed_table(resource_rows, [50 * mm, None]))
     story.append(Spacer(1, 16))
@@ -363,7 +396,7 @@ def _render(user_name, life_stage, report, reviewed, reviewed_by, page_label_map
     story.append(Spacer(1, 10))
     story.append(Paragraph(
         "This report is for informational purposes and does not replace medical advice. If anything here "
-        "concerns you, please speak with a GP or qualified practitioner. In an emergency, or if you ever feel "
+        "concerns you, please speak with a GP or practitioner. In an emergency, or if you ever feel "
         "unsafe, contact your GP, midwife, or NHS 111 immediately.",
         body_soft
     ))

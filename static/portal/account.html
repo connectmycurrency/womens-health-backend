@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" style="background:#FAF8FC;">
+<html lang="en" style="background:#FFFFFF;">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,33 +9,39 @@
 <style>
   :root{ color-scheme: light only; }
   *{box-sizing:border-box;}
-  body{ margin:0; background:#FAF8FC; color:#241933; font-family:'Karla', Arial, sans-serif; }
+  body{ margin:0; background:#FFFFFF; color:#16241F; font-family:'Karla', Arial, sans-serif; }
   .wrap{max-width:640px; margin:0 auto; padding:48px 24px;}
-  h1{font-family:'Fraunces', serif; font-size:1.7rem; color:#2E0854; margin-bottom:4px;}
-  .sub{color:#5B4E6D; margin-bottom:28px;}
-  .card{background:white; border:1px solid #E4D9F0; border-radius:14px; padding:24px; margin-bottom:18px;}
+  h1{font-family:'Fraunces', serif; font-size:1.7rem; color:#0B4F4A; margin-bottom:4px;}
+  .sub{color:#52625F; margin-bottom:28px;}
+  .card{background:white; border:1px solid #DCEBE8; border-radius:14px; padding:24px; margin-bottom:18px;}
   .status{display:inline-block; font-size:0.72rem; font-weight:700; padding:4px 12px; border-radius:100px; text-transform:uppercase; margin-bottom:14px;}
-  .status.pending_review{background:#FBE7F1; color:#C2367B;}
-  .status.reviewed{background:#F1E7FB; color:#7C2AE8;}
-  .track{background:#FAF8FC; border-radius:10px; padding:18px 20px; margin-top:12px; border-left:4px solid #7C2AE8;}
-  .track h3{font-size:1.15rem; margin:0 0 4px 0; color:#2E0854;}
-  .track .band{font-weight:700; font-size:0.9rem; color:#7C2AE8; display:block; margin-bottom:8px;}
-  .track p{font-size:0.92rem; color:#5B4E6D; margin-top:6px; line-height:1.5;}
-  .track .summary{font-weight:600; color:#241933;}
-  .track h4{font-size:0.85rem; color:#2E0854; margin:14px 0 4px 0; text-transform:uppercase; letter-spacing:0.03em;}
-  .track ul{margin:6px 0 0 0; padding-left:18px; font-size:0.9rem; color:#5B4E6D; line-height:1.5;}
+  .status.pending_review{background:#FDF2DC; color:#E8A500;}
+  .status.reviewed{background:#E3F3F1; color:#12897E;}
+  .track{background:#F7FBFA; border-radius:10px; padding:18px 20px; margin-top:12px; border-left:4px solid #12897E;}
+  .track.band-low{border-left-color:#1E8A4C;}
+  .track.band-mid{border-left-color:#E8A500;}
+  .track.band-high{border-left-color:#D64550;}
+  .track h3{font-size:1.15rem; margin:0 0 4px 0; color:#0B4F4A;}
+  .track .band{font-weight:700; font-size:0.9rem; display:block; margin-bottom:8px;}
+  .track .band.low{color:#1E8A4C;}
+  .track .band.mid{color:#E8A500;}
+  .track .band.high{color:#D64550;}
+  .track p{font-size:0.92rem; color:#52625F; margin-top:6px; line-height:1.5;}
+  .track .summary{font-weight:600; color:#16241F;}
+  .track h4{font-size:0.85rem; color:#0B4F4A; margin:14px 0 4px 0; text-transform:uppercase; letter-spacing:0.03em;}
+  .track ul{margin:6px 0 0 0; padding-left:18px; font-size:0.9rem; color:#52625F; line-height:1.5;}
   .track ul li{margin-bottom:4px;}
-  .track .specialist-box{background:white; border:1px solid #E4D9F0; border-radius:8px; padding:12px 14px; margin-top:10px;}
-  .track .specialist-name{font-weight:700; color:#2E0854; font-size:0.92rem;}
-  .overview-line{font-size:0.98rem; color:#2E0854; font-weight:600; margin-bottom:18px; line-height:1.5;}
+  .track .specialist-box{background:white; border:1px solid #DCEBE8; border-radius:8px; padding:12px 14px; margin-top:10px;}
+  .track .specialist-name{font-weight:700; color:#0B4F4A; font-size:0.92rem;}
+  .overview-line{font-size:0.98rem; color:#0B4F4A; font-weight:600; margin-bottom:18px; line-height:1.5;}
   button, .btn-link{
     display:inline-block; padding:13px 22px; border-radius:100px; border:none; font-weight:700;
     cursor:pointer; font-size:0.95rem; text-decoration:none; text-align:center;
   }
-  .btn-gold{background:#C9A227; color:#2E0854;}
+  .btn-teal{background:#12897E; color:white;}
   .btn-whatsapp{background:#25D366; color:white; margin-left:10px;}
-  .empty{color:#5B4E6D; text-align:center; padding:40px 0;}
-  .logout{font-size:0.85rem; color:#5B4E6D; text-decoration:underline; cursor:pointer; background:none; border:none; padding:0;}
+  .empty{color:#52625F; text-align:center; padding:40px 0;}
+  .logout{font-size:0.85rem; color:#52625F; text-decoration:underline; cursor:pointer; background:none; border:none; padding:0;}
 </style>
 </head>
 <body>
@@ -82,10 +88,26 @@
       var t = data.report.tracks[key];
       var nextItems = (t.next_steps || []).map(function(n){ return '<li>' + n + '</li>'; }).join('');
       var tipItems = (t.lifestyle_tips || []).map(function(n){ return '<li>' + n + '</li>'; }).join('');
-      var html = '<div class="track">';
+      var html = '<div class="track band-' + t.band + '">';
       html += '<h3>' + t.title + '</h3>';
-      html += '<span class="band">' + t.label + '</span>';
+      html += '<span class="band ' + t.band + '">' + t.label + '</span>';
       html += '<p class="summary">' + t.summary + '</p>';
+      if(t.reported_symptoms && t.reported_symptoms.length){
+        html += '<p style="font-size:0.85rem; color:#52625F; margin-top:4px;">Based on your answers: ' + t.reported_symptoms.join(', ').toLowerCase() + '.</p>';
+      }
+      if(t.reported_factors && t.reported_factors.length){
+        html += '<p style="font-size:0.85rem; color:#52625F; margin-top:4px;">Based on your answers: ' + t.reported_factors.join(', ').toLowerCase() + '.</p>';
+      }
+      if(t.band === 'low'){
+        if(t.why_it_matters){ html += '<p style="margin-top:8px;">' + t.why_it_matters.split('. ')[0] + '.</p>'; }
+        if(t.next_steps && t.next_steps.length){
+          var lowSteps = t.next_steps.slice(0,2).map(function(s){ return '<li>' + s + '</li>'; }).join('');
+          html += '<ul style="margin-top:8px;">' + lowSteps + '</ul>';
+        }
+        html += '<p style="font-size:0.85rem; color:#52625F; margin-top:8px;">No referral needed here right now.</p>';
+        html += '</div>';
+        return html;
+      }
       if(t.why_it_matters){ html += '<h4>Why this matters</h4><p>' + t.why_it_matters + '</p>'; }
       if(nextItems){ html += '<h4>Your next steps</h4><ul>' + nextItems + '</ul>'; }
       if(tipItems){ html += '<h4>Lifestyle tips</h4><ul>' + tipItems + '</ul>'; }
@@ -108,7 +130,7 @@
         tracksHtml +
       '</div>' +
       '<div class="card" style="text-align:center;">' +
-        '<a class="btn-link btn-gold" id="downloadBtn" href="#">Download full report (PDF)</a>' +
+        '<a class="btn-link btn-teal" id="downloadBtn" href="#">Download full report (PDF)</a>' +
         '<a class="btn-link btn-whatsapp" id="whatsappBtn" href="#" target="_blank" rel="noopener">Join our WhatsApp community</a>' +
       '</div>';
 
