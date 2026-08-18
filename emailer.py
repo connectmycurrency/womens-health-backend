@@ -16,23 +16,26 @@ def send_report_ready_email(lead):
 
     subject = "Your Women's Health Check is ready"
     html = f"""
-    <div style="font-family:Arial,sans-serif; max-width:520px; margin:0 auto; color:#241933;">
-      <h2 style="color:#2E0854;">Your results are ready</h2>
+    <div style="font-family:Arial,sans-serif; max-width:520px; margin:0 auto; color:#16241F;">
+      <h2 style="color:#0B4F4A;">Your results are ready</h2>
       <p>Hi{f' {lead.name}' if lead.name else ''},</p>
-      <p>Thanks for completing your Women's Health Check. Your full personalised report,
-      with next steps and a specialist recommendation, is ready to view.</p>
+      <p>Thanks for completing your Women's Health Check. Your full, personalised report,
+      with next steps and a practitioner recommendation, is ready to view, completely
+      confidential and free.</p>
       <p style="margin:24px 0;">
-        <a href="{signup_url}" style="background:#C9A227; color:#2E0854; padding:14px 24px;
+        <a href="{signup_url}" style="background:#12897E; color:#FFFFFF; padding:14px 24px;
         border-radius:100px; text-decoration:none; font-weight:bold; display:inline-block;">
           View my full report
         </a>
       </p>
-      <p style="font-size:13px; color:#5B4E6D;">
+      <p style="font-size:13px; color:#52625F;">
         Can't see this email in your inbox? It's worth checking your spam or junk folder,
         first emails from a new sender often land there by mistake.
       </p>
-      <p style="font-size:13px; color:#5B4E6D;">
-        This report is for informational purposes and does not replace medical advice.
+      <p style="font-size:13px; color:#52625F;">
+        A practitioner takes a holistic, personalised look at every report before it's
+        treated as final. This report is for informational purposes and does not replace
+        medical advice.
       </p>
     </div>
     """

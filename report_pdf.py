@@ -187,7 +187,7 @@ def _render(user_name, life_stage, report, reviewed, reviewed_by, page_label_map
     if reviewed:
         review_line = f"Reviewed by {reviewed_by}." if reviewed_by else "Reviewed by a practitioner."
     else:
-        review_line = "Awaiting practitioner review. Treat this report as provisional until reviewed."
+        review_line = "Your practitioner review is currently in progress."
 
     story.append(SectionMarker("About this report", header_state))
     story.append(Paragraph("About this report", h1))

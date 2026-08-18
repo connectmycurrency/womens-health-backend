@@ -327,19 +327,19 @@ BAND_COPY = {
 SPECIALIST_MAP = {
     "menopause": {
         "name": "Practitioner",
-        "expect": "A practitioner will typically review your full symptom picture, discuss hormone testing if relevant, and talk through the full range of options, HRT and non-hormonal, so you can choose what's right for you.",
+        "expect": "A practitioner will take a holistic look at your full symptom picture, not just the loudest one, discuss hormone testing if relevant, and talk you through the full range of options, from HRT to non-hormonal approaches, so together you can build a personalised plan that actually fits your life.",
     },
     "maternal": {
         "name": "Practitioner",
-        "expect": "A practitioner will talk through how you're doing without judgement, help you understand what's typical for this stage, and guide you toward the right support, whether that's practical help, talking therapies, or something else.",
+        "expect": "A practitioner will talk through how you're doing without judgement, taking a genuinely holistic view of your mood, sleep, and support network together rather than in isolation, and help you find the right support, proactively, whether that's practical help, talking therapies, or something else.",
     },
     "strength": {
         "name": "Practitioner",
-        "expect": "A practitioner can arrange a bone density scan or bloodwork if relevant, and help build you a safe, structured plan rather than leaving you to guess where to start.",
+        "expect": "A practitioner can arrange a bone density scan or bloodwork if relevant, and build you a personalised, proactive plan for the years ahead, rather than leaving you to guess where to start.",
     },
     "preconception": {
         "name": "Practitioner",
-        "expect": "A practitioner will review your cycle and lifestyle answers with you, and help you understand whether, and when, it's worth pursuing further investigations.",
+        "expect": "A practitioner will take a holistic look at your cycle and lifestyle answers together, and help you understand, proactively, whether and when it's worth pursuing further investigations, so you're never just waiting to see what happens.",
     },
 }
 
